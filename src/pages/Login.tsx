@@ -104,8 +104,8 @@ const Login = () => {
             <ArrowLeft className="h-4 w-4" />Voltar ao login
           </button>
         ) : (
-          <button onClick={() => setIsSignUp(!isSignUp)} className="w-full text-center text-sm text-primary font-body hover:underline">
-            {isSignUp ? "Já tem conta? Entrar" : "Não tem conta? Criar conta"}
+          <button onClick={() => navigate("/register")} className="w-full text-center text-sm text-primary font-body hover:underline">
+            Comprou o programa? Ativar conta
           </button>
         )}
 
