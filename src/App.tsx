@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { usePlanAccess } from "@/hooks/usePlanAccess";
 import BottomNav from "./components/BottomNav";
 import Index from "./pages/Index";
 import CycleDiary from "./pages/CycleDiary";
@@ -15,6 +16,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 import Conteudo from "./pages/Conteudo";
+import Planos from "./pages/Planos";
 
 const queryClient = new QueryClient();
 
