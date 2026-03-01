@@ -11,6 +11,7 @@ import Habits from "./pages/Habits";
 import Community from "./pages/Community";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
+import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
