@@ -189,6 +189,7 @@ export type Database = {
           id: string
           module_name: string
           order_index: number
+          pdf_url: string | null
           plan_required: string
           thumbnail_url: string | null
           title: string
@@ -200,6 +201,7 @@ export type Database = {
           id?: string
           module_name: string
           order_index?: number
+          pdf_url?: string | null
           plan_required?: string
           thumbnail_url?: string | null
           title: string
@@ -211,6 +213,7 @@ export type Database = {
           id?: string
           module_name?: string
           order_index?: number
+          pdf_url?: string | null
           plan_required?: string
           thumbnail_url?: string | null
           title?: string
