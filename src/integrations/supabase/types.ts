@@ -85,6 +85,33 @@ export type Database = {
         }
         Relationships: []
       }
+      cycle_config: {
+        Row: {
+          created_at: string
+          cycle_length: number
+          id: string
+          last_period_date: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          cycle_length?: number
+          id?: string
+          last_period_date: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          cycle_length?: number
+          id?: string
+          last_period_date?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       cycle_journal: {
         Row: {
           created_at: string
@@ -154,6 +181,99 @@ export type Database = {
         }
         Relationships: []
       }
+      lessons: {
+        Row: {
+          created_at: string
+          description: string | null
+          hls_url: string
+          id: string
+          module_name: string
+          order_index: number
+          plan_required: string
+          thumbnail_url: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          hls_url: string
+          id?: string
+          module_name: string
+          order_index?: number
+          plan_required?: string
+          thumbnail_url?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          hls_url?: string
+          id?: string
+          module_name?: string
+          order_index?: number
+          plan_required?: string
+          thumbnail_url?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      moderation_log: {
+        Row: {
+          content_id: string
+          content_type: string
+          deleted_at: string
+          id: string
+          moderator_id: string
+          reason: string
+        }
+        Insert: {
+          content_id: string
+          content_type: string
+          deleted_at?: string
+          id?: string
+          moderator_id: string
+          reason: string
+        }
+        Update: {
+          content_id?: string
+          content_type?: string
+          deleted_at?: string
+          id?: string
+          moderator_id?: string
+          reason?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          read: boolean
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          read?: boolean
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          read?: boolean
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           age: number | null
@@ -161,8 +281,13 @@ export type Database = {
           created_at: string
           diagnosis: string | null
           id: string
+          is_owner: boolean
           name: string
+          plan_expires_at: string | null
+          plan_status: string
+          plan_type: string
           private_profile: boolean
+          scheduled_for_deletion: boolean
           trying_for: string | null
           updated_at: string
           user_id: string
@@ -173,8 +298,13 @@ export type Database = {
           created_at?: string
           diagnosis?: string | null
           id?: string
+          is_owner?: boolean
           name?: string
+          plan_expires_at?: string | null
+          plan_status?: string
+          plan_type?: string
           private_profile?: boolean
+          scheduled_for_deletion?: boolean
           trying_for?: string | null
           updated_at?: string
           user_id: string
@@ -185,8 +315,13 @@ export type Database = {
           created_at?: string
           diagnosis?: string | null
           id?: string
+          is_owner?: boolean
           name?: string
+          plan_expires_at?: string | null
+          plan_status?: string
+          plan_type?: string
           private_profile?: boolean
+          scheduled_for_deletion?: boolean
           trying_for?: string | null
           updated_at?: string
           user_id?: string
