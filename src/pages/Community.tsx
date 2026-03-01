@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
-import { Plus, Heart } from "lucide-react";
+import { Plus, Heart, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CommunityPost from "@/components/CommunityPost";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/AuthContext";
+import { usePlanAccess } from "@/hooks/usePlanAccess";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -27,6 +29,7 @@ interface Post {
 
 const Community = () => {
   const { user, profile } = useAuth();
+  const { isOwner } = usePlanAccess();
   const [activeCategory, setActiveCategory] = useState("Todas");
   const [posts, setPosts] = useState<Post[]>([]);
   const [newPost, setNewPost] = useState("");
@@ -106,7 +109,15 @@ const Community = () => {
     <div className="min-h-screen bg-background pb-24">
       <div className="border-b border-border bg-card px-5 pt-12 pb-4">
         <div className="mx-auto max-w-lg">
-          <h1 className="font-display text-2xl font-semibold text-foreground">Comunidade</h1>
+          <div className="flex items-center gap-2">
+            <h1 className="font-display text-2xl font-semibold text-foreground">Comunidade</h1>
+            {isOwner && (
+              <Badge className="bg-[#5b8e9e] text-white text-[10px] gap-1">
+                <Shield className="h-3 w-3" />
+                Moderador 🛡️
+              </Badge>
+            )}
+          </div>
           <p className="mt-1 text-sm text-muted-foreground font-body">Espaço seguro e acolhedor</p>
           <div className="mt-3 flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
             {categories.map((cat) => (
@@ -149,7 +160,13 @@ const Community = () => {
           <p className="text-center text-sm text-muted-foreground font-body py-8">Nenhum post ainda. Seja a primeira! 🌸</p>
         ) : (
           filteredPosts.map((post) => (
-            <CommunityPost key={post.id} {...post} onLike={() => handleLike(post.id)} />
+            <CommunityPost
+              key={post.id}
+              {...post}
+              onLike={() => handleLike(post.id)}
+              onDelete={fetchPosts}
+              isOwner={isOwner}
+            />
           ))
         )}
       </div>
