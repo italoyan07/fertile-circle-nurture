@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CalendarDays, Plus, Users, TrendingUp, Lock } from "lucide-react";
+import { CalendarDays, Plus, Users, TrendingUp, Lock, BookOpen, Clipboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
