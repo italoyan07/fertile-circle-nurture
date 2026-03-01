@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CalendarDays, Plus, Users, TrendingUp, Lock } from "lucide-react";
+import { CalendarDays, Plus, Users, TrendingUp, Lock, BookOpen, Clipboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -69,13 +69,31 @@ const Index = () => {
           </Button>
         </div>
 
-        {/* Community Access */}
-        <div className="animate-fade-in" style={{ animationDelay: "0.2s" }}>
-          <button onClick={() => hasCommunityAccess ? navigate("/comunidade") : setShowUpgradeModal(true)} className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card p-5 shadow-soft transition-all hover:shadow-card hover:border-primary/20">
+        {/* Quick Access */}
+        <div className="grid grid-cols-2 gap-3 animate-fade-in" style={{ animationDelay: "0.2s" }}>
+          <button onClick={() => hasCommunityAccess ? navigate("/comunidade") : setShowUpgradeModal(true)} className="flex flex-col items-center gap-2 rounded-xl border border-border bg-card p-4 shadow-soft transition-all hover:shadow-card hover:border-primary/20">
             <Users className="h-6 w-6 text-primary" />
-            <span className="text-sm font-semibold text-foreground font-body">Comunidade</span>
+            <span className="text-xs font-semibold text-foreground font-body">Comunidade</span>
             {!hasCommunityAccess && <Lock className="h-3 w-3 text-muted-foreground" />}
           </button>
+          <button onClick={() => navigate("/conteudo")} className="flex flex-col items-center gap-2 rounded-xl border border-border bg-card p-4 shadow-soft transition-all hover:shadow-card hover:border-primary/20">
+            <BookOpen className="h-6 w-6 text-primary" />
+            <span className="text-xs font-semibold text-foreground font-body">Conteúdo do Programa</span>
+          </button>
+        </div>
+
+        {/* Diagnostic Form */}
+        <div className="rounded-xl border border-border bg-card p-5 shadow-soft animate-fade-in" style={{ animationDelay: "0.3s" }}>
+          <div className="flex items-center gap-3 mb-2">
+            <Clipboard className="h-6 w-6 text-primary shrink-0" />
+            <h3 className="font-display text-base font-semibold text-foreground">Formulário de Diagnóstico</h3>
+          </div>
+          <p className="text-sm text-muted-foreground font-body mb-3">Preencha seu diagnóstico inicial e nos ajude a personalizar sua jornada 🌸</p>
+          <a href="https://forms.google.com" target="_blank" rel="noopener noreferrer">
+            <Button variant="outline" size="sm" className="w-full border-primary/20 text-primary hover:bg-primary/5">
+              Preencher agora
+            </Button>
+          </a>
         </div>
 
         <div className="py-4 text-center">
