@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Plus, Heart } from "lucide-react";
+import logoFertile from "@/assets/logo-fertile.png";
 import { Button } from "@/components/ui/button";
 import CommunityPost from "@/components/CommunityPost";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -104,8 +105,9 @@ const Community = () => {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      <div className="border-b border-border bg-card px-5 pt-12 pb-4">
-        <div className="mx-auto max-w-lg">
+      <div className="bg-background px-5 pt-12 pb-4">
+        <div className="mx-auto max-w-lg text-center">
+          <img src={logoFertile} alt="Programa FÉRTILE" className="mx-auto mb-4 h-10 object-contain" />
           <h1 className="font-display text-2xl font-semibold text-foreground">Comunidade</h1>
           <p className="mt-1 text-sm text-muted-foreground font-body">Espaço seguro e acolhedor</p>
           <div className="mt-3 flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
@@ -152,6 +154,10 @@ const Community = () => {
             <CommunityPost key={post.id} {...post} onLike={() => handleLike(post.id)} />
           ))
         )}
+
+        <div className="py-4 text-center">
+          <p className="text-xs text-muted-foreground font-body">© Nutricionista Laiane Paula · Todos os direitos reservados</p>
+        </div>
       </div>
     </div>
   );

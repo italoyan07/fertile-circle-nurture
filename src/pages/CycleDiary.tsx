@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Save } from "lucide-react";
+import logoFertile from "@/assets/logo-fertile.png";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import CyclePhaseTag, { type Phase } from "@/components/CyclePhaseTag";
@@ -64,8 +65,9 @@ const CycleDiary = () => {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      <div className="border-b border-border bg-card px-5 pt-12 pb-5">
-        <div className="mx-auto max-w-lg">
+      <div className="bg-background px-5 pt-12 pb-5">
+        <div className="mx-auto max-w-lg text-center">
+          <img src={logoFertile} alt="Programa FÉRTILE" className="mx-auto mb-4 h-10 object-contain" />
           <h1 className="font-display text-2xl font-semibold text-foreground">Diário do Ciclo</h1>
           <p className="mt-1 text-sm text-muted-foreground font-body">Registre como você está hoje</p>
         </div>
@@ -125,6 +127,10 @@ const CycleDiary = () => {
         <Button onClick={handleSave} className="w-full bg-primary text-primary-foreground hover:bg-primary/90" size="lg" disabled={saving}>
           <Save className="mr-2 h-4 w-4" />{saving ? "Salvando..." : "Salvar registro"}
         </Button>
+
+        <div className="py-4 text-center">
+          <p className="text-xs text-muted-foreground font-body">© Nutricionista Laiane Paula · Todos os direitos reservados</p>
+        </div>
       </div>
     </div>
   );

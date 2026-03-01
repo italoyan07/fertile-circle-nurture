@@ -105,12 +105,13 @@ const Conteudo = () => {
   return (
     <div className="min-h-screen bg-background pb-24">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-md border-b border-border">
-        <div className="mx-auto max-w-lg flex items-center justify-center gap-3 px-4 py-3">
-          <img src={logoFertile} alt="FÉRTILE" className="h-8 w-8 rounded-full object-cover" />
-          <h1 className="font-display text-xl font-semibold text-foreground">
+      <div className="bg-background px-5 pt-12 pb-5">
+        <div className="mx-auto max-w-lg text-center">
+          <img src={logoFertile} alt="Programa FÉRTILE" className="mx-auto mb-4 h-10 object-contain" />
+          <h1 className="font-display text-2xl font-semibold text-foreground">
             Conteúdo do Programa
           </h1>
+          <p className="mt-1 text-sm text-muted-foreground font-body">Suas aulas e materiais</p>
         </div>
       </div>
 

@@ -19,9 +19,9 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      <div className="bg-card border-b border-border px-5 pt-12 pb-6">
-        <div className="mx-auto max-w-lg">
-          <img src={logoFertile} alt="Programa FÉRTILE" className="mb-4 h-10 object-contain" />
+      <div className="bg-background px-5 pt-12 pb-6">
+        <div className="mx-auto max-w-lg text-center">
+          <img src={logoFertile} alt="Programa FÉRTILE" className="mx-auto mb-4 h-10 object-contain" />
           <h1 className="font-display text-2xl font-semibold text-foreground">
             Olá, {firstName} 🌸
           </h1>
@@ -85,6 +85,10 @@ const Index = () => {
               <ExternalLink className="mr-2 h-4 w-4" />Acessar Conteúdo do Programa
             </Button>
           </a>
+        </div>
+
+        <div className="py-4 text-center">
+          <p className="text-xs text-muted-foreground font-body">© Nutricionista Laiane Paula · Todos os direitos reservados</p>
         </div>
       </div>
     </div>
