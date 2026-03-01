@@ -70,7 +70,7 @@ const Index = () => {
 
   // Expiry warning check
   useEffect(() => {
-    if (!user) return;
+    if (!user || isOwner) return;
     const checkWarning = async () => {
       const shownKey = `expiry_warning_shown_${today}`;
       if (sessionStorage.getItem(shownKey)) return;
