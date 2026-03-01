@@ -12,6 +12,7 @@ import Community from "./pages/Community";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
+import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 import Conteudo from "./pages/Conteudo";
 
