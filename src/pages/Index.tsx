@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CalendarDays, Plus, ExternalLink, Users, TrendingUp, Lock } from "lucide-react";
+import { CalendarDays, Plus, Users, TrendingUp, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -69,28 +69,13 @@ const Index = () => {
           </Button>
         </div>
 
-        {/* Quick Access */}
-        <div className="grid grid-cols-2 gap-3 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-          <button onClick={() => hasCommunityAccess ? navigate("/comunidade") : setShowUpgradeModal(true)} className="flex flex-col items-center gap-2 rounded-xl border border-border bg-card p-4 shadow-soft transition-all hover:shadow-card hover:border-primary/20">
+        {/* Community Access */}
+        <div className="animate-fade-in" style={{ animationDelay: "0.2s" }}>
+          <button onClick={() => hasCommunityAccess ? navigate("/comunidade") : setShowUpgradeModal(true)} className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card p-5 shadow-soft transition-all hover:shadow-card hover:border-primary/20">
             <Users className="h-6 w-6 text-primary" />
-            <span className="text-xs font-semibold text-foreground font-body">Comunidade</span>
+            <span className="text-sm font-semibold text-foreground font-body">Comunidade</span>
             {!hasCommunityAccess && <Lock className="h-3 w-3 text-muted-foreground" />}
           </button>
-          <a href="https://kiwify.com" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2 rounded-xl border border-border bg-card p-4 shadow-soft transition-all hover:shadow-card hover:border-primary/20">
-            <ExternalLink className="h-6 w-6 text-primary" />
-            <span className="text-xs font-semibold text-foreground font-body">Acessar Aulas</span>
-          </a>
-        </div>
-
-        {/* Kiwify CTA */}
-        <div className="rounded-xl border border-primary/20 bg-primary/5 p-5 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-          <p className="text-xs font-semibold uppercase tracking-wider text-primary font-body mb-1">Conteúdo do Programa</p>
-          <p className="text-sm text-foreground/80 font-body mb-3">Acesse suas aulas, materiais e protocolos na plataforma Kiwify.</p>
-          <a href="https://kiwify.com" target="_blank" rel="noopener noreferrer">
-            <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90" size="sm">
-              <ExternalLink className="mr-2 h-4 w-4" />Acessar Conteúdo do Programa
-            </Button>
-          </a>
         </div>
 
         <div className="py-4 text-center">
