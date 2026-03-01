@@ -54,12 +54,6 @@ const Login = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {isSignUp && !isForgotPassword && (
-            <div className="space-y-2">
-              <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground font-body">Nome</Label>
-              <Input type="text" placeholder="Seu nome" value={name} onChange={(e) => setName(e.target.value)} required className="font-body" />
-            </div>
-          )}
           <div className="space-y-2">
             <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground font-body">E-mail</Label>
             <Input type="email" placeholder="seu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required className="font-body" />
