@@ -14,7 +14,6 @@ import Login from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 import Conteudo from "./pages/Conteudo";
-import Planos from "./pages/Planos";
 
 const queryClient = new QueryClient();
 
@@ -41,7 +40,6 @@ const AppRoutes = () => {
         <Route path="/comunidade" element={<ProtectedRoute><Community /></ProtectedRoute>} />
         <Route path="/conteudo" element={<ProtectedRoute><Conteudo /></ProtectedRoute>} />
         <Route path="/perfil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-        <Route path="/planos" element={<ProtectedRoute><Planos /></ProtectedRoute>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <BottomNav />
