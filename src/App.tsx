@@ -47,9 +47,10 @@ const AppRoutes = () => {
         <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
         <Route path="/diario" element={<ProtectedRoute><CycleDiary /></ProtectedRoute>} />
         <Route path="/habitos" element={<ProtectedRoute><Habits /></ProtectedRoute>} />
-        <Route path="/comunidade" element={<ProtectedRoute><Community /></ProtectedRoute>} />
+        <Route path="/comunidade" element={<ProtectedRoute><CommunityGuard><Community /></CommunityGuard></ProtectedRoute>} />
         <Route path="/conteudo" element={<ProtectedRoute><Conteudo /></ProtectedRoute>} />
         <Route path="/perfil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path="/planos" element={<ProtectedRoute><Planos /></ProtectedRoute>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <BottomNav />
