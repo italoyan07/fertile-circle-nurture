@@ -39,11 +39,9 @@ const Login = () => {
     setLoading(false);
   };
 
-  const title = isForgotPassword ? "Redefinir Senha" : isSignUp ? "Criar Conta" : "Bem-vinda";
+  const title = isForgotPassword ? "Redefinir Senha" : "Bem-vinda";
   const subtitle = isForgotPassword
     ? "Informe seu e-mail para receber o link de redefinição"
-    : isSignUp
-    ? "Junte-se ao Programa FÉRTILE"
     : "Acesse sua conta do Programa FÉRTILE";
 
   return (
