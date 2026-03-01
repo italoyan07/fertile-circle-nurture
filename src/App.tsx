@@ -27,6 +27,12 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+const CommunityGuard = ({ children }: { children: React.ReactNode }) => {
+  const { hasCommunityAccess } = usePlanAccess();
+  if (!hasCommunityAccess) return <Navigate to="/" replace />;
+  return <>{children}</>;
+};
+
 const AppRoutes = () => {
   const { user, loading } = useAuth();
 
