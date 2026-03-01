@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setTimeout(() => {
           supabase
             .from("profiles")
-            .select("name, avatar_url")
+            .select("name, avatar_url, plan_type, plan_status, is_owner")
             .eq("user_id", session.user.id)
             .single()
             .then(({ data }) => {
