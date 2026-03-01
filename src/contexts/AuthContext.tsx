@@ -2,17 +2,20 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import { supabase } from "@/integrations/supabase/client";
 import type { User, Session } from "@supabase/supabase-js";
 
+interface ProfileData {
+  name: string;
+  avatar_url: string | null;
+  plan_type: string;
+  plan_status: string;
+  plan_expires_at: string | null;
+  is_owner: boolean;
+}
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  profile: {
-    name: string;
-    avatar_url: string | null;
-    plan_type: string;
-    plan_status: string;
-    is_owner: boolean;
-  } | null;
+  profile: ProfileData | null;
   signOut: () => Promise<void>;
 }
 
@@ -30,7 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const [profile, setProfile] = useState<{ name: string; avatar_url: string | null; plan_type: string; plan_status: string; is_owner: boolean } | null>(null);
+  const [profile, setProfile] = useState<ProfileData | null>(null);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -42,7 +45,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setTimeout(() => {
           supabase
             .from("profiles")
-            .select("name, avatar_url, plan_type, plan_status, is_owner")
+            .select("name, avatar_url, plan_type, plan_status, plan_expires_at, is_owner")
             .eq("user_id", session.user.id)
             .single()
             .then(({ data }) => {
