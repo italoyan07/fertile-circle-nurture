@@ -192,8 +192,8 @@ const Index = () => {
               </div>
               <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground font-body mb-1">Seu ciclo</p>
               <p className="text-sm text-muted-foreground font-body mb-4">Configure seu ciclo para acompanhar sua fase atual</p>
-              <Button onClick={openSetupWithDefaults} className="w-full bg-primary text-primary-foreground hover:bg-primary/90" size="sm">
-                <Settings className="mr-2 h-4 w-4" />Configurar agora
+               <Button onClick={openSetupWithDefaults} className="w-full bg-primary text-primary-foreground hover:bg-primary/90" size="sm">
+                 <CalendarDays className="mr-2 h-4 w-4" />Configurar agora
               </Button>
             </div>
           )}
