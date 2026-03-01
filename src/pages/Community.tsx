@@ -151,7 +151,13 @@ const Community = () => {
           <p className="text-center text-sm text-muted-foreground font-body py-8">Nenhum post ainda. Seja a primeira! 🌸</p>
         ) : (
           filteredPosts.map((post) => (
-            <CommunityPost key={post.id} {...post} onLike={() => handleLike(post.id)} />
+            <CommunityPost
+              key={post.id}
+              {...post}
+              isOwner={profile?.is_owner || false}
+              onLike={() => handleLike(post.id)}
+              onDelete={() => fetchPosts()}
+            />
           ))
         )}
 
