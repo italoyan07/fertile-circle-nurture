@@ -232,7 +232,7 @@ const Index = () => {
             <h3 className="font-display text-base font-semibold text-foreground">Formulário de Diagnóstico</h3>
           </div>
           <p className="text-sm text-muted-foreground font-body mb-3">Preencha seu diagnóstico inicial e nos ajude a personalizar sua jornada 🌸</p>
-          <a href="https://forms.google.com" target="_blank" rel="noopener noreferrer">
+          <a href="https://forms.gle/xAnszk9GTnHdSHN17" target="_blank" rel="noopener noreferrer">
             <Button variant="outline" size="sm" className="w-full border-primary/20 text-primary hover:bg-primary/5">Preencher agora</Button>
           </a>
         </div>
