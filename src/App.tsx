@@ -11,6 +11,7 @@ import Habits from "./pages/Habits";
 import Community from "./pages/Community";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
+import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const AppRoutes = () => {
     <>
       <Routes>
         <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
         <Route path="/diario" element={<ProtectedRoute><CycleDiary /></ProtectedRoute>} />
         <Route path="/habitos" element={<ProtectedRoute><Habits /></ProtectedRoute>} />
