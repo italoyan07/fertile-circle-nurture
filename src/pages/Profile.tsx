@@ -126,6 +126,10 @@ const Profile = () => {
         <Button variant="outline" className="w-full border-destructive/30 text-destructive hover:bg-destructive/5" onClick={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />Sair
         </Button>
+
+        <div className="py-4 text-center">
+          <p className="text-xs text-muted-foreground font-body">© Nutricionista Laiane Paula · Todos os direitos reservados</p>
+        </div>
       </div>
     </div>
   );

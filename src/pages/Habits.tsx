@@ -78,6 +78,10 @@ const Habits = () => {
             </div>
           ))}
         </div>
+
+        <div className="py-4 text-center">
+          <p className="text-xs text-muted-foreground font-body">© Nutricionista Laiane Paula · Todos os direitos reservados</p>
+        </div>
       </div>
     </div>
   );

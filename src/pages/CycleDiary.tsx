@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Save } from "lucide-react";
+import logoFertile from "@/assets/logo-fertile.png";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import CyclePhaseTag, { type Phase } from "@/components/CyclePhaseTag";
