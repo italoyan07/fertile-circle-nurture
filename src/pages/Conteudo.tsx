@@ -5,8 +5,8 @@ import {
   Accordion,
   AccordionContent,
   AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+  AccordionTrigger } from
+"@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import {
   PlayCircle,
@@ -16,8 +16,8 @@ import {
   Plane,
   Lock,
   ExternalLink,
-  X,
-} from "lucide-react";
+  X } from
+"lucide-react";
 import Hls from "hls.js";
 import logoFertile from "@/assets/logo-fertile.png";
 
@@ -25,15 +25,15 @@ const materialIcons: Record<string, React.ElementType> = {
   "Lista de compras": ShoppingCart,
   "E-book de receitas para fertilidade": BookOpen,
   "Cupons de desconto em marcas de suplementos": Tag,
-  "Como adaptar a alimentação em viagens e fins de semana": Plane,
+  "Como adaptar a alimentação em viagens e fins de semana": Plane
 };
 
 const MODULE_ORDER = [
-  "Boas-vindas e orientações iniciais",
-  "Pilares da Fertilidade",
-  "Ciclo menstrual e fertilidade",
-  "Materiais de Apoio",
-];
+"Boas-vindas e orientações iniciais",
+"Pilares da Fertilidade",
+"Ciclo menstrual e fertilidade",
+"Materiais de Apoio"];
+
 
 interface Lesson {
   id: string;
@@ -45,7 +45,7 @@ interface Lesson {
   pdf_url: string | null;
 }
 
-const VideoPlayer = ({ url, onClose }: { url: string; onClose: () => void }) => {
+const VideoPlayer = ({ url, onClose }: {url: string;onClose: () => void;}) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -76,10 +76,10 @@ const VideoPlayer = ({ url, onClose }: { url: string; onClose: () => void }) => 
         ref={videoRef}
         controls
         controlsList="nodownload"
-        className="w-full aspect-video bg-foreground/5"
-      />
-    </div>
-  );
+        className="w-full aspect-video bg-foreground/5" />
+
+    </div>);
+
 };
 
 const Conteudo = () => {
@@ -88,13 +88,13 @@ const Conteudo = () => {
   const { data: lessons = [], isLoading } = useQuery({
     queryKey: ["lessons"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("lessons")
-        .select("*")
-        .order("order_index", { ascending: true });
+      const { data, error } = await supabase.
+      from("lessons").
+      select("*").
+      order("order_index", { ascending: true });
       if (error) throw error;
       return data as Lesson[];
-    },
+    }
   });
 
   const grouped = MODULE_ORDER.reduce<Record<string, Lesson[]>>((acc, mod) => {
@@ -107,7 +107,7 @@ const Conteudo = () => {
       {/* Header */}
       <div className="bg-background px-5 pt-12 pb-5">
         <div className="mx-auto max-w-lg text-center">
-          <img src={logoFertile} alt="Programa FÉRTILE" className="mx-auto mb-4 h-10 object-contain" />
+          <img alt="Programa FÉRTILE" className="mx-auto mb-4 h-10 object-contain" src="/lovable-uploads/3888f196-e02a-47d0-8045-3c5099263f7e.png" />
           <h1 className="font-display text-2xl font-semibold text-foreground">
             Conteúdo do Programa
           </h1>
@@ -116,23 +116,23 @@ const Conteudo = () => {
       </div>
 
       <div className="mx-auto max-w-lg px-4 py-6 space-y-4">
-        {isLoading ? (
-          <div className="flex items-center justify-center py-16">
+        {isLoading ?
+        <div className="flex items-center justify-center py-16">
             <p className="text-muted-foreground font-body text-sm">Carregando conteúdo...</p>
-          </div>
-        ) : (
-          <Accordion type="single" collapsible className="space-y-3">
-            {MODULE_ORDER.map((moduleName, idx) => {
-              const moduleLessons = grouped[moduleName] || [];
-              const moduleNumber = idx + 1;
-              const isMaterials = moduleName === "Materiais de Apoio";
+          </div> :
 
-              return (
-                <AccordionItem
-                  key={moduleName}
-                  value={moduleName}
-                  className="border border-border rounded-xl overflow-hidden shadow-soft bg-card"
-                >
+        <Accordion type="single" collapsible className="space-y-3">
+            {MODULE_ORDER.map((moduleName, idx) => {
+            const moduleLessons = grouped[moduleName] || [];
+            const moduleNumber = idx + 1;
+            const isMaterials = moduleName === "Materiais de Apoio";
+
+            return (
+              <AccordionItem
+                key={moduleName}
+                value={moduleName}
+                className="border border-border rounded-xl overflow-hidden shadow-soft bg-card">
+
                   <AccordionTrigger className="px-4 py-3 hover:no-underline">
                     <div className="flex items-center gap-3 text-left">
                       <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary font-body text-sm font-bold">
@@ -146,12 +146,12 @@ const Conteudo = () => {
                   <AccordionContent className="px-4 pb-4">
                     <div className="space-y-2">
                       {moduleLessons.map((lesson) => {
-                        const isPlaying = activeVideo === lesson.id;
+                      const isPlaying = activeVideo === lesson.id;
 
-                        if (isMaterials && lesson.pdf_url) {
-                          const IconComp = materialIcons[lesson.title] || BookOpen;
-                          return (
-                            <div key={lesson.id}>
+                      if (isMaterials && lesson.pdf_url) {
+                        const IconComp = materialIcons[lesson.title] || BookOpen;
+                        return (
+                          <div key={lesson.id}>
                               <div className="flex items-center justify-between rounded-lg border border-border bg-background p-3">
                                 <div className="flex items-center gap-3">
                                   <IconComp className="h-5 w-5 text-primary shrink-0" />
@@ -160,21 +160,21 @@ const Conteudo = () => {
                                   </span>
                                 </div>
                                 <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="gap-1.5 text-xs"
-                                  onClick={() => window.open(lesson.pdf_url!, "_blank")}
-                                >
+                                size="sm"
+                                variant="outline"
+                                className="gap-1.5 text-xs"
+                                onClick={() => window.open(lesson.pdf_url!, "_blank")}>
+
                                   <ExternalLink className="h-3.5 w-3.5" />
                                   Acessar
                                 </Button>
                               </div>
-                            </div>
-                          );
-                        }
+                            </div>);
 
-                        return (
-                          <div key={lesson.id}>
+                      }
+
+                      return (
+                        <div key={lesson.id}>
                             <div className="flex items-center justify-between rounded-lg border border-border bg-background p-3">
                               <div className="flex items-center gap-3">
                                 <PlayCircle className="h-5 w-5 text-primary shrink-0" />
@@ -183,29 +183,29 @@ const Conteudo = () => {
                                 </span>
                               </div>
                               <Button
-                                size="sm"
-                                variant={isPlaying ? "secondary" : "outline"}
-                                className="gap-1.5 text-xs"
-                                onClick={() => setActiveVideo(isPlaying ? null : lesson.id)}
-                              >
+                              size="sm"
+                              variant={isPlaying ? "secondary" : "outline"}
+                              className="gap-1.5 text-xs"
+                              onClick={() => setActiveVideo(isPlaying ? null : lesson.id)}>
+
                                 <PlayCircle className="h-3.5 w-3.5" />
                                 {isPlaying ? "Fechar" : "Assistir"}
                               </Button>
                             </div>
-                            {isPlaying && lesson.hls_url && (
-                              <VideoPlayer
-                                url={lesson.hls_url}
-                                onClose={() => setActiveVideo(null)}
-                              />
-                            )}
-                          </div>
-                        );
-                      })}
+                            {isPlaying && lesson.hls_url &&
+                          <VideoPlayer
+                            url={lesson.hls_url}
+                            onClose={() => setActiveVideo(null)} />
+
+                          }
+                          </div>);
+
+                    })}
                     </div>
                   </AccordionContent>
-                </AccordionItem>
-              );
-            })}
+                </AccordionItem>);
+
+          })}
 
             {/* Módulo 5 — Bônus (bloqueado) */}
             <div className="border border-border rounded-xl overflow-hidden shadow-soft bg-card opacity-60">
@@ -227,7 +227,7 @@ const Conteudo = () => {
               </div>
             </div>
           </Accordion>
-        )}
+        }
 
         {/* Footer */}
         <div className="pt-8 pb-4 text-center">
@@ -236,8 +236,8 @@ const Conteudo = () => {
           </p>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Conteudo;
