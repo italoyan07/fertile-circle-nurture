@@ -11,9 +11,9 @@ import { toast } from "sonner";
 const moodOptions = ["😊 Bem", "😐 Neutra", "😢 Triste", "😤 Irritada", "😰 Ansiosa"];
 const energyOptions = ["⚡ Alta", "🔋 Média", "🪫 Baixa"];
 const symptomOptions = [
-  "Cólica", "Dor de cabeça", "Inchaço", "Sensibilidade nos seios",
-  "Náusea", "Fadiga", "Insônia", "Muco cervical", "Spotting",
-];
+"Cólica", "Dor de cabeça", "Inchaço", "Sensibilidade nos seios",
+"Náusea", "Fadiga", "Insônia", "Muco cervical", "Spotting"];
+
 
 const CycleDiary = () => {
   const { user } = useAuth();
@@ -55,19 +55,19 @@ const CycleDiary = () => {
       symptoms: selectedSymptoms,
       mood: mood || null,
       energy: energy || null,
-      notes: notes || null,
+      notes: notes || null
     };
     const { error } = await supabase.from("cycle_journal").upsert(payload, { onConflict: "user_id,date" });
     setSaving(false);
-    if (error) toast.error("Erro ao salvar registro.");
-    else toast.success("Registro salvo com sucesso! 🌸");
+    if (error) toast.error("Erro ao salvar registro.");else
+    toast.success("Registro salvo com sucesso! 🌸");
   };
 
   return (
     <div className="min-h-screen bg-background pb-24">
       <div className="bg-background px-5 pt-12 pb-5">
         <div className="mx-auto max-w-lg text-center">
-          <img src={logoFertile} alt="Programa FÉRTILE" className="mx-auto mb-4 h-10 object-contain" />
+          <img alt="Programa FÉRTILE" className="mx-auto mb-4 h-10 object-contain" src="/lovable-uploads/635d5d10-72e5-4a7e-86e8-ca016cccf023.png" />
           <h1 className="font-display text-2xl font-semibold text-foreground">Diário do Ciclo</h1>
           <p className="mt-1 text-sm text-muted-foreground font-body">Registre como você está hoje</p>
         </div>
@@ -92,9 +92,9 @@ const CycleDiary = () => {
         <div className="rounded-xl border border-border bg-card p-4 shadow-soft animate-fade-in">
           <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground font-body">Sintomas</p>
           <div className="flex flex-wrap gap-2">
-            {symptomOptions.map((s) => (
-              <button key={s} onClick={() => toggleSymptom(s)} className={`rounded-full border px-3 py-1.5 text-xs font-body transition-all ${selectedSymptoms.includes(s) ? "border-primary bg-primary/10 text-primary font-semibold" : "border-border text-muted-foreground hover:border-primary/30"}`}>{s}</button>
-            ))}
+            {symptomOptions.map((s) =>
+            <button key={s} onClick={() => toggleSymptom(s)} className={`rounded-full border px-3 py-1.5 text-xs font-body transition-all ${selectedSymptoms.includes(s) ? "border-primary bg-primary/10 text-primary font-semibold" : "border-border text-muted-foreground hover:border-primary/30"}`}>{s}</button>
+            )}
           </div>
         </div>
 
@@ -102,9 +102,9 @@ const CycleDiary = () => {
         <div className="rounded-xl border border-border bg-card p-4 shadow-soft animate-fade-in" style={{ animationDelay: "0.1s" }}>
           <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground font-body">Humor</p>
           <div className="flex flex-wrap gap-2">
-            {moodOptions.map((m) => (
-              <button key={m} onClick={() => setMood(m)} className={`rounded-full border px-3 py-1.5 text-xs font-body transition-all ${mood === m ? "border-primary bg-primary/10 text-primary font-semibold" : "border-border text-muted-foreground hover:border-primary/30"}`}>{m}</button>
-            ))}
+            {moodOptions.map((m) =>
+            <button key={m} onClick={() => setMood(m)} className={`rounded-full border px-3 py-1.5 text-xs font-body transition-all ${mood === m ? "border-primary bg-primary/10 text-primary font-semibold" : "border-border text-muted-foreground hover:border-primary/30"}`}>{m}</button>
+            )}
           </div>
         </div>
 
@@ -112,9 +112,9 @@ const CycleDiary = () => {
         <div className="rounded-xl border border-border bg-card p-4 shadow-soft animate-fade-in" style={{ animationDelay: "0.15s" }}>
           <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground font-body">Energia</p>
           <div className="flex gap-2">
-            {energyOptions.map((e) => (
-              <button key={e} onClick={() => setEnergy(e)} className={`flex-1 rounded-lg border px-3 py-2.5 text-xs font-body transition-all ${energy === e ? "border-primary bg-primary/10 text-primary font-semibold" : "border-border text-muted-foreground hover:border-primary/30"}`}>{e}</button>
-            ))}
+            {energyOptions.map((e) =>
+            <button key={e} onClick={() => setEnergy(e)} className={`flex-1 rounded-lg border px-3 py-2.5 text-xs font-body transition-all ${energy === e ? "border-primary bg-primary/10 text-primary font-semibold" : "border-border text-muted-foreground hover:border-primary/30"}`}>{e}</button>
+            )}
           </div>
         </div>
 
@@ -132,8 +132,8 @@ const CycleDiary = () => {
           <p className="text-xs text-muted-foreground font-body">© Nutricionista Laiane Paula · Todos os direitos reservados</p>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default CycleDiary;
