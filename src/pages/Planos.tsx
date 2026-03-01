@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Check, Gem } from "lucide-react";
+import { Check, Gem, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { usePlanAccess } from "@/hooks/usePlanAccess";
 import logoFertile from "@/assets/logo-fertile.png";
