@@ -166,9 +166,9 @@ const Index = () => {
                 <div>
                   <div className="flex items-center gap-2">
                     <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground font-body">Seu ciclo</p>
-                    <button onClick={openSetupWithDefaults} className="text-muted-foreground hover:text-primary transition-colors">
-                      <Settings className="h-3.5 w-3.5" />
-                    </button>
+                     <button onClick={openSetupWithDefaults} className="text-muted-foreground hover:text-primary transition-colors" aria-label="Editar ciclo">
+                       <Pencil className="h-3.5 w-3.5" />
+                     </button>
                   </div>
                   <div className="mt-1 flex items-baseline gap-2">
                     <span className="font-display text-4xl font-bold text-primary">Dia {cycleDay}</span>
