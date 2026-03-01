@@ -42,11 +42,11 @@ const Profile = () => {
       age: age ? parseInt(age) : null,
       trying_for: tryingFor || null,
       diagnosis: diagnosis || null,
-      private_profile: privateProfile,
+      private_profile: privateProfile
     }).eq("user_id", user.id);
     setSaving(false);
-    if (error) toast.error("Erro ao salvar.");
-    else toast.success("Perfil atualizado! 🌸");
+    if (error) toast.error("Erro ao salvar.");else
+    toast.success("Perfil atualizado! 🌸");
   };
 
   const handleLogout = async () => {
@@ -58,7 +58,7 @@ const Profile = () => {
     <div className="min-h-screen bg-background pb-24">
       <div className="bg-background px-5 pt-12 pb-5">
         <div className="mx-auto max-w-lg text-center">
-          <img src={logoFertile} alt="Programa FÉRTILE" className="mx-auto mb-4 h-10 object-contain" />
+          <img alt="Programa FÉRTILE" className="mx-auto mb-4 h-10 object-contain" src="/lovable-uploads/63c73933-32e6-4ec6-b3a2-3ee30e964941.png" />
           <h1 className="font-display text-2xl font-semibold text-foreground">Meu Perfil</h1>
           <p className="mt-1 text-sm text-muted-foreground font-body">Informações pessoais</p>
         </div>
@@ -131,8 +131,8 @@ const Profile = () => {
           <p className="text-xs text-muted-foreground font-body">© Nutricionista Laiane Paula · Todos os direitos reservados</p>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Profile;
