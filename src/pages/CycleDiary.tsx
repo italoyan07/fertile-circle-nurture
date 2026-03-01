@@ -64,8 +64,9 @@ const CycleDiary = () => {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      <div className="border-b border-border bg-card px-5 pt-12 pb-5">
-        <div className="mx-auto max-w-lg">
+      <div className="bg-background px-5 pt-12 pb-5">
+        <div className="mx-auto max-w-lg text-center">
+          <img src={logoFertile} alt="Programa FÉRTILE" className="mx-auto mb-4 h-10 object-contain" />
           <h1 className="font-display text-2xl font-semibold text-foreground">Diário do Ciclo</h1>
           <p className="mt-1 text-sm text-muted-foreground font-body">Registre como você está hoje</p>
         </div>
