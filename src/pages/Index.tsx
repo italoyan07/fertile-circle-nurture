@@ -18,7 +18,7 @@ const Index = () => {
   const phase = "ovulatoria" as const;
   const habitsCompleted = 5;
   const habitsTotal = 8;
-  const progressPercent = Math.round((habitsCompleted / habitsTotal) * 100);
+  const progressPercent = Math.round(habitsCompleted / habitsTotal * 100);
 
   const firstName = profile?.name?.split(" ")[0] || "Querida";
 
@@ -26,7 +26,7 @@ const Index = () => {
     <div className="min-h-screen bg-background pb-24">
       <div className="bg-background px-5 pt-12 pb-6">
         <div className="mx-auto max-w-lg text-center">
-          <img src={logoFertile} alt="Programa FÉRTILE" className="mx-auto mb-4 h-10 object-contain" />
+          <img alt="Programa FÉRTILE" className="mx-auto mb-4 h-10 object-contain" src="/lovable-uploads/6f7a7c90-65d0-424c-9acc-17629830009a.png" />
           <h1 className="font-display text-2xl font-semibold text-foreground">
             Olá, {firstName} 🌸
           </h1>
@@ -109,7 +109,7 @@ const Index = () => {
             <p className="text-sm text-muted-foreground font-body">
               A Comunidade Fertile é exclusiva para alunas dos planos Trimestral e Semestral. Faça o upgrade e conecte-se com outras mulheres nessa jornada. 🌸
             </p>
-            <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => { setShowUpgradeModal(false); navigate("/planos"); }}>
+            <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => {setShowUpgradeModal(false);navigate("/planos");}}>
               Quero fazer upgrade
             </Button>
             <Button variant="ghost" className="w-full text-muted-foreground" onClick={() => setShowUpgradeModal(false)}>
@@ -118,8 +118,8 @@ const Index = () => {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Index;
