@@ -17,13 +17,16 @@ import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 import Conteudo from "./pages/Conteudo";
 import Planos from "./pages/Planos";
+import Expired from "./pages/Expired";
 
 const queryClient = new QueryClient();
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
+  const { isExpired } = usePlanAccess();
   if (loading) return <div className="flex min-h-screen items-center justify-center bg-background"><p className="text-muted-foreground font-body">Carregando...</p></div>;
   if (!user) return <Navigate to="/login" replace />;
+  if (isExpired) return <Navigate to="/expirado" replace />;
   return <>{children}</>;
 };
 
@@ -44,13 +47,14 @@ const AppRoutes = () => {
         <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
         <Route path="/register" element={user ? <Navigate to="/" replace /> : <Register />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/expirado" element={user ? <Expired /> : <Navigate to="/login" replace />} />
+        <Route path="/planos" element={user ? <Planos /> : <Navigate to="/login" replace />} />
         <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
         <Route path="/diario" element={<ProtectedRoute><CycleDiary /></ProtectedRoute>} />
         <Route path="/habitos" element={<ProtectedRoute><Habits /></ProtectedRoute>} />
         <Route path="/comunidade" element={<ProtectedRoute><CommunityGuard><Community /></CommunityGuard></ProtectedRoute>} />
         <Route path="/conteudo" element={<ProtectedRoute><Conteudo /></ProtectedRoute>} />
         <Route path="/perfil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-        <Route path="/planos" element={<ProtectedRoute><Planos /></ProtectedRoute>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <BottomNav />
