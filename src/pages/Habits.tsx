@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Progress } from "@/components/ui/progress";
 import HabitItem from "@/components/HabitItem";
 import { Sparkles } from "lucide-react";
+import logoFertile from "@/assets/logo-fertile.png";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 
