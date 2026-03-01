@@ -65,14 +65,14 @@ const Login = () => {
             </div>
           )}
 
-          {!isSignUp && !isForgotPassword && (
+          {!isForgotPassword && (
             <button type="button" onClick={() => setIsForgotPassword(true)} className="block w-full text-right text-xs text-primary font-body hover:underline">
               Esqueceu sua senha?
             </button>
           )}
 
           <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-primary/90" size="lg" disabled={loading}>
-            {loading ? "Aguarde..." : isForgotPassword ? "Enviar link de redefinição" : isSignUp ? "Criar Conta" : "Entrar"}
+            {loading ? "Aguarde..." : isForgotPassword ? "Enviar link de redefinição" : "Entrar"}
           </Button>
         </form>
 
