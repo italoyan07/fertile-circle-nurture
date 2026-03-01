@@ -12,6 +12,8 @@ import logoFertile from "@/assets/logo-fertile.png";
 const Index = () => {
   const navigate = useNavigate();
   const { profile } = useAuth();
+  const { hasCommunityAccess } = usePlanAccess();
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const cycleDay = 14;
   const phase = "ovulatoria" as const;
   const habitsCompleted = 5;
