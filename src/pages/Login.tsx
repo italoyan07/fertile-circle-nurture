@@ -33,22 +33,9 @@ const Login = () => {
       return;
     }
 
-    if (isSignUp) {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { name },
-          emailRedirectTo: window.location.origin,
-        },
-      });
-      if (error) toast.error(error.message);
-      else toast.success("Conta criada! Verifique seu e-mail para confirmar. 🌸");
-    } else {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) toast.error("E-mail ou senha incorretos.");
-      else navigate("/");
-    }
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) toast.error("E-mail ou senha incorretos.");
+    else navigate("/");
     setLoading(false);
   };
 
