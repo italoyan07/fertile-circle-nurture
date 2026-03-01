@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CalendarDays, Plus, ExternalLink, Users, TrendingUp } from "lucide-react";
+import { CalendarDays, Plus, ExternalLink, Users, TrendingUp, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import CyclePhaseTag from "@/components/CyclePhaseTag";
 import { useAuth } from "@/contexts/AuthContext";
+import { usePlanAccess } from "@/hooks/usePlanAccess";
 import logoFertile from "@/assets/logo-fertile.png";
 
 const Index = () => {
