@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import logoFertile from "@/assets/logo-fertile.png";
-import { ArrowLeft, ShoppingBag, Mail, Lock, CheckCircle, HelpCircle, AlertCircle } from "lucide-react";
+import { ArrowLeft, AlertCircle } from "lucide-react";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -71,60 +71,50 @@ const Register = () => {
 
         {noPurchase ? (
           <div className="space-y-5 animate-fade-in">
-            <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-5 text-center">
-              <div className="flex justify-center mb-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
-                  <AlertCircle className="h-6 w-6 text-destructive" />
-                </div>
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 space-y-3">
+              <div className="flex items-center gap-2">
+                <AlertCircle className="h-5 w-5 text-amber-500 shrink-0" />
+                <p className="text-sm font-semibold text-foreground font-body">
+                  E-mail não encontrado
+                </p>
               </div>
-              <p className="text-sm font-semibold text-foreground font-body mb-1">
-                Compra não encontrada
-              </p>
               <p className="text-sm text-muted-foreground font-body">
-                Não encontramos uma compra associada a este e-mail. Para acessar o Programa FÉRTILE, realize sua compra primeiro. 🌸
+                Não encontramos uma compra associada a este e-mail. Antes de tentar novamente, siga o passo a passo:
               </p>
-            </div>
-
-            <div className="rounded-xl border border-border bg-card p-4 shadow-soft space-y-3">
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground font-body">
-                O que fazer?
-              </p>
-              <div className="space-y-2.5">
-                <div className="flex items-start gap-2.5">
-                  <Mail className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-                  <p className="text-xs text-muted-foreground font-body">
-                    <span className="font-semibold text-foreground">1.</span> Verifique se usou o mesmo e-mail da compra
-                  </p>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <HelpCircle className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-                  <p className="text-xs text-muted-foreground font-body">
-                    <span className="font-semibold text-foreground">2.</span> Confira se não há erros de digitação no e-mail
-                  </p>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <CheckCircle className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-                  <p className="text-xs text-muted-foreground font-body">
-                    <span className="font-semibold text-foreground">3.</span> Verifique se recebeu a confirmação da Kiwify
-                  </p>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <ShoppingBag className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-                  <p className="text-xs text-muted-foreground font-body">
-                    <span className="font-semibold text-foreground">4.</span> Se precisar de ajuda, entre em contato pelo suporte
-                  </p>
-                </div>
+              <ol className="space-y-2.5 pl-1">
+                <li className="text-sm text-muted-foreground font-body">
+                  1️⃣ Verifique se está usando exatamente o mesmo e-mail utilizado na compra do Programa FÉRTILE
+                </li>
+                <li className="text-sm text-muted-foreground font-body">
+                  2️⃣ Confira se não há erros de digitação — uma letra ou ponto fora do lugar já impede o acesso
+                </li>
+                <li className="text-sm text-muted-foreground font-body">
+                  3️⃣ Verifique sua caixa de entrada pelo e-mail de confirmação de compra da Kiwify
+                </li>
+                <li className="text-sm text-muted-foreground font-body">
+                  4️⃣ Se ainda tiver dificuldades, entre em contato com nosso suporte
+                </li>
+              </ol>
+              <div className="flex gap-3 pt-1">
+                <Button
+                  onClick={() => navigate("/planos")}
+                  className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90"
+                  size="sm"
+                >
+                  Ver planos
+                </Button>
+                <a
+                  href={import.meta.env.VITE_WHATSAPP_SUPPORT || "https://wa.me/5500000000000"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1"
+                >
+                  <Button variant="outline" size="sm" className="w-full border-amber-300 text-amber-700 hover:bg-amber-100">
+                    Falar com suporte
+                  </Button>
+                </a>
               </div>
             </div>
-
-            <Button
-              onClick={() => navigate("/planos")}
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-              size="lg"
-            >
-              <ShoppingBag className="mr-2 h-4 w-4" />
-              Ver planos
-            </Button>
 
             <button
               onClick={() => setNoPurchase(false)}
