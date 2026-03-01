@@ -12,6 +12,7 @@ import Community from "./pages/Community";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
+import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 import Conteudo from "./pages/Conteudo";
 
@@ -33,6 +34,7 @@ const AppRoutes = () => {
     <>
       <Routes>
         <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
+        <Route path="/register" element={user ? <Navigate to="/" replace /> : <Register />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
         <Route path="/diario" element={<ProtectedRoute><CycleDiary /></ProtectedRoute>} />

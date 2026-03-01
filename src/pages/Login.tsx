@@ -12,8 +12,6 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [isSignUp, setIsSignUp] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -35,30 +33,15 @@ const Login = () => {
       return;
     }
 
-    if (isSignUp) {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { name },
-          emailRedirectTo: window.location.origin,
-        },
-      });
-      if (error) toast.error(error.message);
-      else toast.success("Conta criada! Verifique seu e-mail para confirmar. 🌸");
-    } else {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) toast.error("E-mail ou senha incorretos.");
-      else navigate("/");
-    }
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) toast.error("E-mail ou senha incorretos.");
+    else navigate("/");
     setLoading(false);
   };
 
-  const title = isForgotPassword ? "Redefinir Senha" : isSignUp ? "Criar Conta" : "Bem-vinda";
+  const title = isForgotPassword ? "Redefinir Senha" : "Bem-vinda";
   const subtitle = isForgotPassword
     ? "Informe seu e-mail para receber o link de redefinição"
-    : isSignUp
-    ? "Junte-se ao Programa FÉRTILE"
     : "Acesse sua conta do Programa FÉRTILE";
 
   return (
@@ -71,12 +54,6 @@ const Login = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {isSignUp && !isForgotPassword && (
-            <div className="space-y-2">
-              <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground font-body">Nome</Label>
-              <Input type="text" placeholder="Seu nome" value={name} onChange={(e) => setName(e.target.value)} required className="font-body" />
-            </div>
-          )}
           <div className="space-y-2">
             <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground font-body">E-mail</Label>
             <Input type="email" placeholder="seu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required className="font-body" />
@@ -88,14 +65,14 @@ const Login = () => {
             </div>
           )}
 
-          {!isSignUp && !isForgotPassword && (
+          {!isForgotPassword && (
             <button type="button" onClick={() => setIsForgotPassword(true)} className="block w-full text-right text-xs text-primary font-body hover:underline">
               Esqueceu sua senha?
             </button>
           )}
 
           <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-primary/90" size="lg" disabled={loading}>
-            {loading ? "Aguarde..." : isForgotPassword ? "Enviar link de redefinição" : isSignUp ? "Criar Conta" : "Entrar"}
+            {loading ? "Aguarde..." : isForgotPassword ? "Enviar link de redefinição" : "Entrar"}
           </Button>
         </form>
 
@@ -104,8 +81,8 @@ const Login = () => {
             <ArrowLeft className="h-4 w-4" />Voltar ao login
           </button>
         ) : (
-          <button onClick={() => setIsSignUp(!isSignUp)} className="w-full text-center text-sm text-primary font-body hover:underline">
-            {isSignUp ? "Já tem conta? Entrar" : "Não tem conta? Criar conta"}
+          <button onClick={() => navigate("/register")} className="w-full text-center text-sm text-primary font-body hover:underline">
+            Comprou o programa? Ativar conta
           </button>
         )}
 
