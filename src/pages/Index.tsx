@@ -97,6 +97,27 @@ const Index = () => {
           <p className="text-xs text-muted-foreground font-body">© Nutricionista Laiane Paula · Todos os direitos reservados</p>
         </div>
       </div>
+
+      {/* Upgrade Modal */}
+      <Dialog open={showUpgradeModal} onOpenChange={setShowUpgradeModal}>
+        <DialogContent className="max-w-[90vw] sm:max-w-sm bg-card text-center p-6">
+          <div className="flex flex-col items-center gap-4">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+              <Lock className="h-7 w-7 text-primary" />
+            </div>
+            <h2 className="font-display text-xl font-semibold text-foreground">Comunidade exclusiva</h2>
+            <p className="text-sm text-muted-foreground font-body">
+              A Comunidade Fertile é exclusiva para alunas dos planos Trimestral e Semestral. Faça o upgrade e conecte-se com outras mulheres nessa jornada. 🌸
+            </p>
+            <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => { setShowUpgradeModal(false); navigate("/planos"); }}>
+              Quero fazer upgrade
+            </Button>
+            <Button variant="ghost" className="w-full text-muted-foreground" onClick={() => setShowUpgradeModal(false)}>
+              Agora não
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
