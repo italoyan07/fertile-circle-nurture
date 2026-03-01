@@ -1,14 +1,19 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CalendarDays, Plus, ExternalLink, Users, TrendingUp } from "lucide-react";
+import { CalendarDays, Plus, ExternalLink, Users, TrendingUp, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import CyclePhaseTag from "@/components/CyclePhaseTag";
 import { useAuth } from "@/contexts/AuthContext";
+import { usePlanAccess } from "@/hooks/usePlanAccess";
 import logoFertile from "@/assets/logo-fertile.png";
 
 const Index = () => {
   const navigate = useNavigate();
   const { profile } = useAuth();
+  const { hasCommunityAccess } = usePlanAccess();
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const cycleDay = 14;
   const phase = "ovulatoria" as const;
   const habitsCompleted = 5;
@@ -66,9 +71,10 @@ const Index = () => {
 
         {/* Quick Access */}
         <div className="grid grid-cols-2 gap-3 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-          <button onClick={() => navigate("/comunidade")} className="flex flex-col items-center gap-2 rounded-xl border border-border bg-card p-4 shadow-soft transition-all hover:shadow-card hover:border-primary/20">
+          <button onClick={() => hasCommunityAccess ? navigate("/comunidade") : setShowUpgradeModal(true)} className="flex flex-col items-center gap-2 rounded-xl border border-border bg-card p-4 shadow-soft transition-all hover:shadow-card hover:border-primary/20">
             <Users className="h-6 w-6 text-primary" />
             <span className="text-xs font-semibold text-foreground font-body">Comunidade</span>
+            {!hasCommunityAccess && <Lock className="h-3 w-3 text-muted-foreground" />}
           </button>
           <a href="https://kiwify.com" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2 rounded-xl border border-border bg-card p-4 shadow-soft transition-all hover:shadow-card hover:border-primary/20">
             <ExternalLink className="h-6 w-6 text-primary" />
@@ -91,6 +97,27 @@ const Index = () => {
           <p className="text-xs text-muted-foreground font-body">© Nutricionista Laiane Paula · Todos os direitos reservados</p>
         </div>
       </div>
+
+      {/* Upgrade Modal */}
+      <Dialog open={showUpgradeModal} onOpenChange={setShowUpgradeModal}>
+        <DialogContent className="max-w-[90vw] sm:max-w-sm bg-card text-center p-6">
+          <div className="flex flex-col items-center gap-4">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+              <Lock className="h-7 w-7 text-primary" />
+            </div>
+            <h2 className="font-display text-xl font-semibold text-foreground">Comunidade exclusiva</h2>
+            <p className="text-sm text-muted-foreground font-body">
+              A Comunidade Fertile é exclusiva para alunas dos planos Trimestral e Semestral. Faça o upgrade e conecte-se com outras mulheres nessa jornada. 🌸
+            </p>
+            <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => { setShowUpgradeModal(false); navigate("/planos"); }}>
+              Quero fazer upgrade
+            </Button>
+            <Button variant="ghost" className="w-full text-muted-foreground" onClick={() => setShowUpgradeModal(false)}>
+              Agora não
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

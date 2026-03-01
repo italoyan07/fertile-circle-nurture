@@ -6,7 +6,13 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  profile: { name: string; avatar_url: string | null } | null;
+  profile: {
+    name: string;
+    avatar_url: string | null;
+    plan_type: string;
+    plan_status: string;
+    is_owner: boolean;
+  } | null;
   signOut: () => Promise<void>;
 }
 
@@ -24,7 +30,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const [profile, setProfile] = useState<{ name: string; avatar_url: string | null } | null>(null);
+  const [profile, setProfile] = useState<{ name: string; avatar_url: string | null; plan_type: string; plan_status: string; is_owner: boolean } | null>(null);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -36,7 +42,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setTimeout(() => {
           supabase
             .from("profiles")
-            .select("name, avatar_url")
+            .select("name, avatar_url, plan_type, plan_status, is_owner")
             .eq("user_id", session.user.id)
             .single()
             .then(({ data }) => {

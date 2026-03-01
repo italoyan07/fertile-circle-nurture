@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { usePlanAccess } from "@/hooks/usePlanAccess";
 import BottomNav from "./components/BottomNav";
 import Index from "./pages/Index";
 import CycleDiary from "./pages/CycleDiary";
@@ -15,6 +16,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 import Conteudo from "./pages/Conteudo";
+import Planos from "./pages/Planos";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +24,12 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
   if (loading) return <div className="flex min-h-screen items-center justify-center bg-background"><p className="text-muted-foreground font-body">Carregando...</p></div>;
   if (!user) return <Navigate to="/login" replace />;
+  return <>{children}</>;
+};
+
+const CommunityGuard = ({ children }: { children: React.ReactNode }) => {
+  const { hasCommunityAccess } = usePlanAccess();
+  if (!hasCommunityAccess) return <Navigate to="/" replace />;
   return <>{children}</>;
 };
 
@@ -39,9 +47,10 @@ const AppRoutes = () => {
         <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
         <Route path="/diario" element={<ProtectedRoute><CycleDiary /></ProtectedRoute>} />
         <Route path="/habitos" element={<ProtectedRoute><Habits /></ProtectedRoute>} />
-        <Route path="/comunidade" element={<ProtectedRoute><Community /></ProtectedRoute>} />
+        <Route path="/comunidade" element={<ProtectedRoute><CommunityGuard><Community /></CommunityGuard></ProtectedRoute>} />
         <Route path="/conteudo" element={<ProtectedRoute><Conteudo /></ProtectedRoute>} />
         <Route path="/perfil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path="/planos" element={<ProtectedRoute><Planos /></ProtectedRoute>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <BottomNav />
