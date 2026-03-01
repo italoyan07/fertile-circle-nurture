@@ -21,7 +21,7 @@ const Login = () => {
 
     if (isForgotPassword) {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
+        redirectTo: `${window.location.origin}/reset-password`
       });
       setLoading(false);
       if (error) {
@@ -34,21 +34,21 @@ const Login = () => {
     }
 
     const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) toast.error("E-mail ou senha incorretos.");
-    else navigate("/");
+    if (error) toast.error("E-mail ou senha incorretos.");else
+    navigate("/");
     setLoading(false);
   };
 
   const title = isForgotPassword ? "Redefinir Senha" : "Bem-vinda";
-  const subtitle = isForgotPassword
-    ? "Informe seu e-mail para receber o link de redefinição"
-    : "Acesse sua conta do Programa FÉRTILE";
+  const subtitle = isForgotPassword ?
+  "Informe seu e-mail para receber o link de redefinição" :
+  "Acesse sua conta do Programa FÉRTILE";
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background px-6">
       <div className="w-full max-w-sm space-y-8 animate-fade-in">
         <div className="flex flex-col items-center">
-          <img src={logoFertile} alt="Programa FÉRTILE" className="mb-6 h-16 object-contain" />
+          <img alt="Programa FÉRTILE" className="mb-6 h-16 object-contain" src="/lovable-uploads/7db39d92-f079-493c-a32f-af65fd94773c.png" />
           <h1 className="font-display text-2xl font-semibold text-foreground">{title}</h1>
           <p className="mt-1 text-sm text-muted-foreground font-body text-center">{subtitle}</p>
         </div>
@@ -58,41 +58,41 @@ const Login = () => {
             <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground font-body">E-mail</Label>
             <Input type="email" placeholder="seu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required className="font-body" />
           </div>
-          {!isForgotPassword && (
-            <div className="space-y-2">
+          {!isForgotPassword &&
+          <div className="space-y-2">
               <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground font-body">Senha</Label>
               <Input type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} className="font-body" />
             </div>
-          )}
+          }
 
-          {!isForgotPassword && (
-            <button type="button" onClick={() => setIsForgotPassword(true)} className="block w-full text-right text-xs text-primary font-body hover:underline">
+          {!isForgotPassword &&
+          <button type="button" onClick={() => setIsForgotPassword(true)} className="block w-full text-right text-xs text-primary font-body hover:underline">
               Esqueceu sua senha?
             </button>
-          )}
+          }
 
           <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-primary/90" size="lg" disabled={loading}>
             {loading ? "Aguarde..." : isForgotPassword ? "Enviar link de redefinição" : "Entrar"}
           </Button>
         </form>
 
-        {isForgotPassword ? (
-          <button onClick={() => setIsForgotPassword(false)} className="flex w-full items-center justify-center gap-2 text-sm text-primary font-body hover:underline">
+        {isForgotPassword ?
+        <button onClick={() => setIsForgotPassword(false)} className="flex w-full items-center justify-center gap-2 text-sm text-primary font-body hover:underline">
             <ArrowLeft className="h-4 w-4" />Voltar ao login
-          </button>
-        ) : (
-          <button onClick={() => navigate("/register")} className="w-full text-center text-sm text-primary font-body hover:underline">
+          </button> :
+
+        <button onClick={() => navigate("/register")} className="w-full text-center text-sm text-primary font-body hover:underline">
             Comprou o programa? Ativar conta
           </button>
-        )}
+        }
 
         <p className="text-center text-xs text-muted-foreground font-body">
           Ao entrar, você concorda com nossa{" "}
           <a href="#" className="text-primary underline">Política de Privacidade</a>
         </p>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Login;
