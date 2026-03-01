@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { CalendarDays, Plus, Users, TrendingUp, Lock, BookOpen, Clipboard, Settings, AlertTriangle } from "lucide-react";
+import { CalendarDays, Plus, Users, TrendingUp, Lock, BookOpen, Clipboard, Pencil, AlertTriangle } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
