@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { CalendarDays, Plus, Users, TrendingUp, Lock, BookOpen, Clipboard, Settings, AlertTriangle } from "lucide-react";
+import { CalendarDays, Plus, Users, TrendingUp, Lock, BookOpen, Clipboard, Pencil, AlertTriangle } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -166,9 +166,9 @@ const Index = () => {
                 <div>
                   <div className="flex items-center gap-2">
                     <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground font-body">Seu ciclo</p>
-                    <button onClick={openSetupWithDefaults} className="text-muted-foreground hover:text-primary transition-colors">
-                      <Settings className="h-3.5 w-3.5" />
-                    </button>
+                     <button onClick={openSetupWithDefaults} className="text-muted-foreground hover:text-primary transition-colors" aria-label="Editar ciclo">
+                       <Pencil className="h-3.5 w-3.5" />
+                     </button>
                   </div>
                   <div className="mt-1 flex items-baseline gap-2">
                     <span className="font-display text-4xl font-bold text-primary">Dia {cycleDay}</span>
@@ -192,8 +192,8 @@ const Index = () => {
               </div>
               <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground font-body mb-1">Seu ciclo</p>
               <p className="text-sm text-muted-foreground font-body mb-4">Configure seu ciclo para acompanhar sua fase atual</p>
-              <Button onClick={openSetupWithDefaults} className="w-full bg-primary text-primary-foreground hover:bg-primary/90" size="sm">
-                <Settings className="mr-2 h-4 w-4" />Configurar agora
+               <Button onClick={openSetupWithDefaults} className="w-full bg-primary text-primary-foreground hover:bg-primary/90" size="sm">
+                 <CalendarDays className="mr-2 h-4 w-4" />Configurar agora
               </Button>
             </div>
           )}
