@@ -126,6 +126,10 @@ const CycleDiary = () => {
         <Button onClick={handleSave} className="w-full bg-primary text-primary-foreground hover:bg-primary/90" size="lg" disabled={saving}>
           <Save className="mr-2 h-4 w-4" />{saving ? "Salvando..." : "Salvar registro"}
         </Button>
+
+        <div className="py-4 text-center">
+          <p className="text-xs text-muted-foreground font-body">© Nutricionista Laiane Paula · Todos os direitos reservados</p>
+        </div>
       </div>
     </div>
   );
