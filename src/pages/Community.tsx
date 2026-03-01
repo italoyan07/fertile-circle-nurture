@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Plus, Heart } from "lucide-react";
+import logoFertile from "@/assets/logo-fertile.png";
 import { Button } from "@/components/ui/button";
 import CommunityPost from "@/components/CommunityPost";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
