@@ -41,13 +41,13 @@ const Community = () => {
     const { data: postsData } = await supabase.from("community_posts").select("*").order("created_at", { ascending: false });
     if (!postsData) return;
 
-    const postIds = postsData.map(p => p.id);
+    const postIds = postsData.map((p) => p.id);
     const { data: reactionsData } = await supabase.from("reactions").select("post_id, user_id").in("post_id", postIds.length ? postIds : ["none"]);
     const { data: commentsData } = await supabase.from("comments").select("post_id").in("post_id", postIds.length ? postIds : ["none"]);
 
-    const mapped: Post[] = postsData.map(p => {
-      const postReactions = reactionsData?.filter(r => r.post_id === p.id) || [];
-      const postComments = commentsData?.filter(c => c.post_id === p.id) || [];
+    const mapped: Post[] = postsData.map((p) => {
+      const postReactions = reactionsData?.filter((r) => r.post_id === p.id) || [];
+      const postComments = commentsData?.filter((c) => c.post_id === p.id) || [];
       const timeDiff = Date.now() - new Date(p.created_at).getTime();
       const hours = Math.floor(timeDiff / 3600000);
       const timeStr = hours < 1 ? "agora" : hours < 24 ? `${hours}h atrás` : `${Math.floor(hours / 24)}d atrás`;
@@ -61,21 +61,21 @@ const Community = () => {
         likes: postReactions.length,
         comments: postComments.length,
         time: timeStr,
-        liked: postReactions.some(r => r.user_id === user.id),
-        user_id: p.user_id,
+        liked: postReactions.some((r) => r.user_id === user.id),
+        user_id: p.user_id
       };
     });
     setPosts(mapped);
     setLoading(false);
   };
 
-  useEffect(() => { fetchPosts(); }, [user]);
+  useEffect(() => {fetchPosts();}, [user]);
 
   const filteredPosts = activeCategory === "Todas" ? posts : posts.filter((p) => p.category === activeCategory);
 
   const handleLike = async (id: string) => {
     if (!user) return;
-    const post = posts.find(p => p.id === id);
+    const post = posts.find((p) => p.id === id);
     if (!post) return;
 
     if (post.liked) {
@@ -83,20 +83,20 @@ const Community = () => {
     } else {
       await supabase.from("reactions").insert({ user_id: user.id, post_id: id });
     }
-    setPosts(prev => prev.map(p => p.id === id ? { ...p, liked: !p.liked, likes: p.liked ? p.likes - 1 : p.likes + 1 } : p));
+    setPosts((prev) => prev.map((p) => p.id === id ? { ...p, liked: !p.liked, likes: p.liked ? p.likes - 1 : p.likes + 1 } : p));
   };
 
   const handlePost = async () => {
     if (!newPost.trim() || !user) return;
-    const authorName = isAnonymous ? "Anônima" : (profile?.name || "Usuária");
+    const authorName = isAnonymous ? "Anônima" : profile?.name || "Usuária";
     const { error } = await supabase.from("community_posts").insert({
       user_id: user.id,
       author_name: authorName,
       anonymous: isAnonymous,
       category: newCategory,
-      content: newPost,
+      content: newPost
     });
-    if (error) { toast.error("Erro ao publicar."); return; }
+    if (error) {toast.error("Erro ao publicar.");return;}
     setNewPost("");
     setDialogOpen(false);
     toast.success("Post publicado! 🌸");
@@ -107,15 +107,15 @@ const Community = () => {
     <div className="min-h-screen bg-background pb-24">
       <div className="bg-background px-5 pt-12 pb-4">
         <div className="mx-auto max-w-lg text-center">
-          <img src={logoFertile} alt="Programa FÉRTILE" className="mx-auto mb-4 h-10 object-contain" />
+          <img alt="Programa FÉRTILE" className="mx-auto mb-4 h-10 object-contain" src="/lovable-uploads/9fc0e6b8-64d9-4398-996f-ccdd9dc83da9.png" />
           <h1 className="font-display text-2xl font-semibold text-foreground">Comunidade</h1>
           <p className="mt-1 text-sm text-muted-foreground font-body">Espaço seguro e acolhedor</p>
           <div className="mt-3 flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-            {categories.map((cat) => (
-              <button key={cat} onClick={() => setActiveCategory(cat)} className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-body font-semibold transition-all ${activeCategory === cat ? "border-primary bg-primary text-primary-foreground" : "border-border text-muted-foreground hover:border-primary/30"}`}>
+            {categories.map((cat) =>
+            <button key={cat} onClick={() => setActiveCategory(cat)} className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-body font-semibold transition-all ${activeCategory === cat ? "border-primary bg-primary text-primary-foreground" : "border-border text-muted-foreground hover:border-primary/30"}`}>
                 {cat === "Meu Positivo" && <Heart className="mr-1 inline h-3 w-3" />}{cat}
               </button>
-            ))}
+            )}
           </div>
         </div>
       </div>
@@ -131,9 +131,9 @@ const Community = () => {
             <DialogHeader><DialogTitle className="font-display text-xl">Novo Post</DialogTitle></DialogHeader>
             <div className="space-y-4">
               <div className="flex flex-wrap gap-2">
-                {categories.filter((c) => c !== "Todas").map((cat) => (
-                  <button key={cat} onClick={() => setNewCategory(cat)} className={`rounded-full border px-2.5 py-1 text-[11px] font-body font-semibold transition-all ${newCategory === cat ? "border-primary bg-primary text-primary-foreground" : "border-border text-muted-foreground"}`}>{cat}</button>
-                ))}
+                {categories.filter((c) => c !== "Todas").map((cat) =>
+                <button key={cat} onClick={() => setNewCategory(cat)} className={`rounded-full border px-2.5 py-1 text-[11px] font-body font-semibold transition-all ${newCategory === cat ? "border-primary bg-primary text-primary-foreground" : "border-border text-muted-foreground"}`}>{cat}</button>
+                )}
               </div>
               <Textarea placeholder="Compartilhe sua experiência, dúvida ou conquista..." value={newPost} onChange={(e) => setNewPost(e.target.value)} className="min-h-[100px] font-body" />
               <div className="flex items-center gap-2">
@@ -145,28 +145,28 @@ const Community = () => {
           </DialogContent>
         </Dialog>
 
-        {loading ? (
-          <p className="text-center text-sm text-muted-foreground font-body py-8">Carregando...</p>
-        ) : filteredPosts.length === 0 ? (
-          <p className="text-center text-sm text-muted-foreground font-body py-8">Nenhum post ainda. Seja a primeira! 🌸</p>
-        ) : (
-          filteredPosts.map((post) => (
-            <CommunityPost
-              key={post.id}
-              {...post}
-              isOwner={profile?.is_owner || false}
-              onLike={() => handleLike(post.id)}
-              onDelete={() => fetchPosts()}
-            />
-          ))
-        )}
+        {loading ?
+        <p className="text-center text-sm text-muted-foreground font-body py-8">Carregando...</p> :
+        filteredPosts.length === 0 ?
+        <p className="text-center text-sm text-muted-foreground font-body py-8">Nenhum post ainda. Seja a primeira! 🌸</p> :
+
+        filteredPosts.map((post) =>
+        <CommunityPost
+          key={post.id}
+          {...post}
+          isOwner={profile?.is_owner || false}
+          onLike={() => handleLike(post.id)}
+          onDelete={() => fetchPosts()} />
+
+        )
+        }
 
         <div className="py-4 text-center">
           <p className="text-xs text-muted-foreground font-body">© Nutricionista Laiane Paula · Todos os direitos reservados</p>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Community;
