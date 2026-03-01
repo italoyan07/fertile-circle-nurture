@@ -71,9 +71,10 @@ const Index = () => {
 
         {/* Quick Access */}
         <div className="grid grid-cols-2 gap-3 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-          <button onClick={() => navigate("/comunidade")} className="flex flex-col items-center gap-2 rounded-xl border border-border bg-card p-4 shadow-soft transition-all hover:shadow-card hover:border-primary/20">
+          <button onClick={() => hasCommunityAccess ? navigate("/comunidade") : setShowUpgradeModal(true)} className="flex flex-col items-center gap-2 rounded-xl border border-border bg-card p-4 shadow-soft transition-all hover:shadow-card hover:border-primary/20">
             <Users className="h-6 w-6 text-primary" />
             <span className="text-xs font-semibold text-foreground font-body">Comunidade</span>
+            {!hasCommunityAccess && <Lock className="h-3 w-3 text-muted-foreground" />}
           </button>
           <a href="https://kiwify.com" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2 rounded-xl border border-border bg-card p-4 shadow-soft transition-all hover:shadow-card hover:border-primary/20">
             <ExternalLink className="h-6 w-6 text-primary" />
