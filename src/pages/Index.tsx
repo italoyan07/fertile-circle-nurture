@@ -19,9 +19,9 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      <div className="bg-card border-b border-border px-5 pt-12 pb-6">
-        <div className="mx-auto max-w-lg">
-          <img src={logoFertile} alt="Programa FÉRTILE" className="mb-4 h-10 object-contain" />
+      <div className="bg-background px-5 pt-12 pb-6">
+        <div className="mx-auto max-w-lg text-center">
+          <img src={logoFertile} alt="Programa FÉRTILE" className="mx-auto mb-4 h-10 object-contain" />
           <h1 className="font-display text-2xl font-semibold text-foreground">
             Olá, {firstName} 🌸
           </h1>
