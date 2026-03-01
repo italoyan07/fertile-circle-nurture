@@ -13,6 +13,7 @@ import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
+import Conteudo from "./pages/Conteudo";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const AppRoutes = () => {
         <Route path="/diario" element={<ProtectedRoute><CycleDiary /></ProtectedRoute>} />
         <Route path="/habitos" element={<ProtectedRoute><Habits /></ProtectedRoute>} />
         <Route path="/comunidade" element={<ProtectedRoute><Community /></ProtectedRoute>} />
+        <Route path="/conteudo" element={<ProtectedRoute><Conteudo /></ProtectedRoute>} />
         <Route path="/perfil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="*" element={<NotFound />} />
       </Routes>

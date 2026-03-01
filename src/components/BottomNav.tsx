@@ -1,10 +1,10 @@
-import { Home, BookOpen, CheckSquare, Users, User } from "lucide-react";
+import { Home, BookOpen, CheckSquare, Users, User, PlaySquare } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const navItems = [
   { icon: Home, label: "Início", path: "/" },
+  { icon: PlaySquare, label: "Conteúdo", path: "/conteudo" },
   { icon: BookOpen, label: "Diário", path: "/diario" },
-  { icon: CheckSquare, label: "Hábitos", path: "/habitos" },
   { icon: Users, label: "Comunidade", path: "/comunidade" },
   { icon: User, label: "Perfil", path: "/perfil" },
 ];
