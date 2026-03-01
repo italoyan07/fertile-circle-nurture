@@ -21,7 +21,7 @@ const TOTAL_HABITS = 8;
 const Index = () => {
   const navigate = useNavigate();
   const { user, profile } = useAuth();
-  const { hasCommunityAccess, isGrace, graceDaysLeft } = usePlanAccess();
+  const { hasCommunityAccess, isGrace, graceDaysLeft, isOwner } = usePlanAccess();
   const { loading: cycleLoading, config, cycleDay, phase, saveConfig } = useCycleConfig();
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [showCycleSetup, setShowCycleSetup] = useState(false);
@@ -70,7 +70,7 @@ const Index = () => {
 
   // Expiry warning check
   useEffect(() => {
-    if (!user) return;
+    if (!user || isOwner) return;
     const checkWarning = async () => {
       const shownKey = `expiry_warning_shown_${today}`;
       if (sessionStorage.getItem(shownKey)) return;
