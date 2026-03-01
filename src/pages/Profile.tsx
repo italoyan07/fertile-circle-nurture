@@ -123,6 +123,17 @@ const Profile = () => {
           </div>
         </div>
 
+        {/* My Plan */}
+        <div className="rounded-xl border border-border bg-card p-5 shadow-soft animate-fade-in" style={{ animationDelay: "0.3s" }}>
+          <button onClick={() => navigate("/planos")} className="flex w-full items-center gap-3">
+            <Gem className="h-5 w-5 text-primary shrink-0" />
+            <div className="flex-1 text-left">
+              <p className="text-sm font-semibold text-foreground font-body">Meu Plano</p>
+              <p className="text-xs text-muted-foreground font-body">Veja seu plano atual e opções de upgrade</p>
+            </div>
+          </button>
+        </div>
+
         <Button variant="outline" className="w-full border-destructive/30 text-destructive hover:bg-destructive/5" onClick={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />Sair
         </Button>
