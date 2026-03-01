@@ -75,11 +75,18 @@ const Planos = () => {
       </div>
 
       <div className="mx-auto max-w-lg space-y-4 px-5 pt-5">
+        {isOwner && (
+          <div className="flex items-center justify-center gap-2 rounded-xl border border-[#5b8e9e]/30 bg-[#5b8e9e] p-4 shadow-soft">
+            <Crown className="h-5 w-5 text-white" />
+            <span className="text-sm font-semibold text-white font-body">Acesso Proprietário — todos os recursos liberados</span>
+          </div>
+        )}
+
         {plans.map((plan) => {
           const rank = PLAN_RANK[plan.key];
-          const isCurrent = planType === plan.key;
-          const isLower = rank < currentRank;
-          const isUpgrade = rank > currentRank;
+          const isCurrent = !isOwner && planType === plan.key;
+          const isLower = !isOwner && rank < currentRank;
+          const isUpgrade = !isOwner && rank > currentRank;
 
           return (
             <div
@@ -91,6 +98,11 @@ const Planos = () => {
                 {isCurrent &&
                 <span className="bg-primary text-primary-foreground rounded-full px-3 py-1 text-xs font-semibold">
                     Seu plano atual
+                  </span>
+                }
+                {isOwner &&
+                <span className="bg-[#5b8e9e] text-white rounded-full px-3 py-1 text-xs font-semibold flex items-center gap-1">
+                    <Crown className="h-3 w-3" />[Modo proprietário]
                   </span>
                 }
                 {isLower &&
@@ -113,14 +125,14 @@ const Planos = () => {
                 )}
               </ul>
 
-              {isUpgrade && plan.url &&
+              {!isOwner && isUpgrade && plan.url &&
               <a href={plan.url} target="_blank" rel="noopener noreferrer">
                   <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
                     {plan.cta}
                   </Button>
                 </a>
               }
-              {isCurrent &&
+              {!isOwner && isCurrent &&
               <Button className="w-full" variant="outline" disabled>
                   Plano atual
                 </Button>
@@ -128,13 +140,6 @@ const Planos = () => {
             </div>);
 
         })}
-
-        {isOwner &&
-        <div className="flex items-center justify-center gap-2 rounded-xl border border-primary/20 bg-primary/5 p-3">
-            <Gem className="h-4 w-4 text-primary" />
-            <span className="text-sm font-semibold text-primary font-body">Acesso Proprietário — todos os recursos liberados</span>
-          </div>
-        }
 
         <div className="py-4 text-center">
           <p className="text-xs text-muted-foreground font-body">© Nutricionista Laiane Paula · Todos os direitos reservados</p>
