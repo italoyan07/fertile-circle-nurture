@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import logoFertile from "@/assets/logo-fertile.png";
-import { ArrowLeft, ShoppingBag, Mail, Lock, CheckCircle, HelpCircle, AlertCircle } from "lucide-react";
+import { ArrowLeft, AlertCircle } from "lucide-react";
 
 const Register = () => {
   const navigate = useNavigate();
