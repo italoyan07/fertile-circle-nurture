@@ -60,27 +60,6 @@ Deno.serve(async (req) => {
     const rawBody = await req.text();
     console.log("Received webhook request");
 
-    // Validate HMAC signature
-    const secret = Deno.env.get("KIWIFY_WEBHOOK_SECRET");
-    if (!secret) {
-      console.error("KIWIFY_WEBHOOK_SECRET not configured");
-      return new Response(JSON.stringify({ error: "Server misconfigured" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    const signature = req.headers.get("x-kiwify-signature") || "";
-    const valid = await verifySignature(rawBody, signature, secret);
-    if (!valid) {
-      console.error("Invalid signature");
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-    console.log("Signature validated");
-
     const payload = JSON.parse(rawBody);
 
     // Check event type
@@ -97,18 +76,29 @@ Deno.serve(async (req) => {
     const name = customer.name || "";
     const productId = product.id;
 
-    console.log(`Processing order: email=${email}, product=${productId}`);
+    // Validate per-product token
+    const receivedToken = req.headers.get("token") || "";
+    const expectedToken = PRODUCT_TOKENS[productId];
 
-    // Map product to plan
-    const planType = PRODUCT_MAP[productId];
-    if (!planType) {
+    if (!expectedToken) {
       console.error("Unknown product ID:", productId);
       return new Response(JSON.stringify({ error: "Unknown product" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    console.log("Plan type:", planType);
+
+    if (receivedToken !== expectedToken) {
+      console.error(`Invalid token for product ${productId}. Received: ${receivedToken}`);
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Map product to plan
+    const planType = PRODUCT_MAP[productId]!;
+    console.log(`Token validated. Product: ${productId}, Plan: ${planType}, Email: ${email}`);
 
     // Init Supabase admin client
     const supabaseAdmin = createClient(
