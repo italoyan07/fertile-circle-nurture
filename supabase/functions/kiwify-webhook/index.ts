@@ -41,26 +41,8 @@ function generatePassword(length = 8): string {
   return pass;
 }
 
-async function verifySignature(body: string, signature: string, secret: string): Promise<boolean> {
-  try {
-    const encoder = new TextEncoder();
-    const key = await crypto.subtle.importKey(
-      "raw",
-      encoder.encode(secret),
-      { name: "HMAC", hash: "SHA-256" },
-      false,
-      ["sign"]
-    );
-    const signed = await crypto.subtle.sign("HMAC", key, encoder.encode(body));
-    const expected = Array.from(new Uint8Array(signed))
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("");
-    return expected === signature;
-  } catch (e) {
-    console.error("Signature verification error:", e);
-    return false;
-  }
-}
+
+
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
