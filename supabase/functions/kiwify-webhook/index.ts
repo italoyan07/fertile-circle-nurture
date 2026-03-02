@@ -24,6 +24,12 @@ const PLAN_DAYS: Record<string, number> = {
   semestral: 180,
 };
 
+const PRODUCT_TOKENS: Record<string, string> = {
+  "cd936090-0501-11f1-9801-2ff8538a4163": "h9r1ooc08sr",
+  "93f9ea70-158c-11f1-a9b9-67c978dacc32": "ht2lzqtzqhz",
+  "68260450-158d-11f1-b868-fb0cdd92aeaa": "6fll18sv68r",
+};
+
 function generatePassword(length = 8): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
   let pass = "";
