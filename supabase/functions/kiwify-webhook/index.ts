@@ -42,8 +42,6 @@ function generatePassword(length = 8): string {
 }
 
 
-
-
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
