@@ -3,7 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-kiwify-signature",
+    "authorization, x-client-info, apikey, content-type, token",
 };
 
 const PRODUCT_MAP: Record<string, string> = {
@@ -24,6 +24,12 @@ const PLAN_DAYS: Record<string, number> = {
   semestral: 180,
 };
 
+const PRODUCT_TOKENS: Record<string, string> = {
+  "cd936090-0501-11f1-9801-2ff8538a4163": "h9r1ooc08sr",
+  "93f9ea70-158c-11f1-a9b9-67c978dacc32": "ht2lzqtzqhz",
+  "68260450-158d-11f1-b868-fb0cdd92aeaa": "6fll18sv68r",
+};
+
 function generatePassword(length = 8): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
   let pass = "";
@@ -35,26 +41,6 @@ function generatePassword(length = 8): string {
   return pass;
 }
 
-async function verifySignature(body: string, signature: string, secret: string): Promise<boolean> {
-  try {
-    const encoder = new TextEncoder();
-    const key = await crypto.subtle.importKey(
-      "raw",
-      encoder.encode(secret),
-      { name: "HMAC", hash: "SHA-256" },
-      false,
-      ["sign"]
-    );
-    const signed = await crypto.subtle.sign("HMAC", key, encoder.encode(body));
-    const expected = Array.from(new Uint8Array(signed))
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("");
-    return expected === signature;
-  } catch (e) {
-    console.error("Signature verification error:", e);
-    return false;
-  }
-}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -72,27 +58,6 @@ Deno.serve(async (req) => {
     const rawBody = await req.text();
     console.log("Received webhook request");
 
-    // Validate HMAC signature
-    const secret = Deno.env.get("KIWIFY_WEBHOOK_SECRET");
-    if (!secret) {
-      console.error("KIWIFY_WEBHOOK_SECRET not configured");
-      return new Response(JSON.stringify({ error: "Server misconfigured" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    const signature = req.headers.get("x-kiwify-signature") || "";
-    const valid = await verifySignature(rawBody, signature, secret);
-    if (!valid) {
-      console.error("Invalid signature");
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-    console.log("Signature validated");
-
     const payload = JSON.parse(rawBody);
 
     // Check event type
@@ -109,18 +74,29 @@ Deno.serve(async (req) => {
     const name = customer.name || "";
     const productId = product.id;
 
-    console.log(`Processing order: email=${email}, product=${productId}`);
+    // Validate per-product token
+    const receivedToken = req.headers.get("token") || "";
+    const expectedToken = PRODUCT_TOKENS[productId];
 
-    // Map product to plan
-    const planType = PRODUCT_MAP[productId];
-    if (!planType) {
+    if (!expectedToken) {
       console.error("Unknown product ID:", productId);
       return new Response(JSON.stringify({ error: "Unknown product" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    console.log("Plan type:", planType);
+
+    if (receivedToken !== expectedToken) {
+      console.error(`Invalid token for product ${productId}. Received: ${receivedToken}`);
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Map product to plan
+    const planType = PRODUCT_MAP[productId]!;
+    console.log(`Token validated. Product: ${productId}, Plan: ${planType}, Email: ${email}`);
 
     // Init Supabase admin client
     const supabaseAdmin = createClient(
