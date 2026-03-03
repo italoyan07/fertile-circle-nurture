@@ -336,7 +336,6 @@ Deno.serve(async (req) => {
     }
 
     // Send WhatsApp notification (never fails the main flow)
-    const rawPhone = customer.mobile || customer.phone || "";
     const formattedPhone = formatPhone(rawPhone);
     if (formattedPhone) {
       await sendWhatsApp(formattedPhone, getFirstName(name));
