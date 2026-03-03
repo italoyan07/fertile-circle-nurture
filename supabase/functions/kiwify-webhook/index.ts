@@ -340,16 +340,20 @@ Deno.serve(async (req) => {
         throw updateError;
       }
 
-      console.log(`New user provisioned: ${email}, plan: ${planType}, temp password generated`);
+      console.log(`Criando usuário para ${email}`);
+      console.log(`New user provisioned: ${email}, plan: ${planType}`);
     }
 
     // Send WhatsApp notification (never fails the main flow)
     const formattedPhone = formatPhone(rawPhone);
     if (formattedPhone) {
       await sendWhatsApp(formattedPhone, getFirstName(name));
+      console.log(`WhatsApp enviado para ${formattedPhone}`);
     } else {
       console.log("No valid phone number found, skipping WhatsApp");
     }
+
+    console.log(`Processamento concluído para ${email}`);
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
