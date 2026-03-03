@@ -178,6 +178,24 @@ Deno.serve(async (req) => {
     }
     console.log(`Token validated. Product: ${productId}, Plan: ${planType}, Email: ${email}`);
 
+    // Validate email before proceeding
+    const isTestEmail =
+      !email ||
+      email === "johndoe@example.com" ||
+      !email.includes("@") ||
+      !email.includes(".") ||
+      email.length < 5;
+
+    if (isTestEmail) {
+      console.log("Payload de teste detectado, pulando criação de usuário. Email:", email || "(vazio)");
+      return new Response(JSON.stringify({ success: true, test: true }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    console.log(`Processando compra real para ${email}`);
+
     // Init Supabase admin client
     const supabaseAdmin = createClient(
       Deno.env.get("SUPABASE_URL")!,
