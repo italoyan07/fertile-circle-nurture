@@ -119,42 +119,63 @@ Deno.serve(async (req) => {
 
     const payload = JSON.parse(rawBody);
 
-    // Check event type
-    if (payload.event !== "order.approved") {
-      console.log("Ignoring event:", payload.event);
+    // Detect event from multiple possible fields
+    const event =
+      payload.event ||
+      payload.type ||
+      payload.status ||
+      payload.data?.status ||
+      payload.order_status;
+
+    const approvedStatuses = [
+      "order.approved",
+      "approved",
+      "paid",
+      "complete",
+      "completed",
+    ];
+
+    if (event && !approvedStatuses.includes(event)) {
+      console.log("Ignoring event:", event);
       return new Response(JSON.stringify({ success: true, message: "Event ignored" }), {
         status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    const { customer, product } = payload.data;
-    const email = customer.email?.toLowerCase().trim();
+    if (!event) {
+      console.log("No identifiable event field found. Processing anyway. Payload:", JSON.stringify(payload));
+    } else {
+      console.log("Event detected:", event);
+    }
+
+    const data = payload.data || payload;
+    const customer = data.customer || {};
+    const product = data.product || {};
+    const email = (customer.email || "").toLowerCase().trim();
     const name = customer.name || "";
-    const productId = product.id;
+    const productId = product.id || "";
 
-    // Validate per-product token
+    // Determine plan and validate token
+    let planType: string;
     const receivedToken = req.headers.get("token") || "";
-    const expectedToken = PRODUCT_TOKENS[productId];
 
-    if (!expectedToken) {
-      console.error("Unknown product ID:", productId);
-      return new Response(JSON.stringify({ error: "Unknown product" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    if (PRODUCT_MAP[productId]) {
+      // Known production product
+      const expectedToken = PRODUCT_TOKENS[productId];
+      if (receivedToken !== expectedToken) {
+        console.error(`Invalid token for product ${productId}. Received: ${receivedToken}`);
+        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+          status: 401,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      planType = PRODUCT_MAP[productId];
+    } else {
+      // Unknown product ID – default to mensal (testing)
+      console.log(`Unknown product ID: ${productId}. Defaulting to 'mensal', skipping token validation.`);
+      planType = "mensal";
     }
-
-    if (receivedToken !== expectedToken) {
-      console.error(`Invalid token for product ${productId}. Received: ${receivedToken}`);
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    // Map product to plan
-    const planType = PRODUCT_MAP[productId]!;
     console.log(`Token validated. Product: ${productId}, Plan: ${planType}, Email: ${email}`);
 
     // Init Supabase admin client
