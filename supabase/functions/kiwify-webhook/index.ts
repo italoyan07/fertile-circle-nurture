@@ -119,15 +119,17 @@ Deno.serve(async (req) => {
 
     const payload = JSON.parse(rawBody);
 
-    // Detect event from multiple possible fields
+    // Detect event — prioritize Kiwify's actual format
     const event =
+      payload.webhook_event_type ||
+      payload.order_status ||
       payload.event ||
       payload.type ||
       payload.status ||
-      payload.data?.status ||
-      payload.order_status;
+      payload.data?.status;
 
     const approvedStatuses = [
+      "order_approved",
       "order.approved",
       "approved",
       "paid",
@@ -149,29 +151,33 @@ Deno.serve(async (req) => {
       console.log("Event detected:", event);
     }
 
-    const data = payload.data || payload;
-
-    // Email — multiple paths
+    // Email — prioritize Kiwify's Customer (capital C)
     const email = (
+      payload.Customer?.email ||
+      payload.data?.Customer?.email ||
       payload.data?.customer?.email ||
       payload.customer?.email ||
-      payload.data?.Customer?.email ||
       payload.buyer?.email ||
       payload.data?.buyer?.email ||
       ""
     ).toLowerCase().trim();
 
-    // Nome — multiple paths
+    // Nome — prioritize Kiwify's Customer.first_name
     const name =
+      payload.Customer?.first_name ||
+      payload.Customer?.full_name ||
+      payload.data?.Customer?.first_name ||
+      payload.data?.Customer?.full_name ||
       payload.data?.customer?.name ||
       payload.customer?.name ||
-      payload.data?.Customer?.name ||
       payload.buyer?.name ||
       payload.data?.buyer?.name ||
       "";
 
-    // Telefone — multiple paths
+    // Telefone — prioritize Kiwify's Customer.mobile
     const rawPhone =
+      payload.Customer?.mobile ||
+      payload.data?.Customer?.mobile ||
       payload.data?.customer?.mobile ||
       payload.data?.customer?.phone ||
       payload.customer?.mobile ||
@@ -180,19 +186,21 @@ Deno.serve(async (req) => {
       payload.data?.buyer?.phone ||
       "";
 
-    // Product ID — multiple paths
+    // Product ID — prioritize Kiwify's Product.product_id
     const productId =
+      payload.Product?.product_id ||
+      payload.data?.Product?.product_id ||
       payload.data?.product?.id ||
       payload.product?.id ||
-      payload.data?.Product?.id ||
       payload.product_id ||
       payload.data?.product_id ||
       "";
 
-    console.log("Email encontrado:", email);
-    console.log("Nome encontrado:", name);
-    console.log("Telefone encontrado:", rawPhone);
-    console.log("Product ID encontrado:", productId);
+    console.log("Email:", email);
+    console.log("Nome:", name);
+    console.log("Telefone:", rawPhone);
+    console.log("Plan:", PRODUCT_MAP[productId] || "desconhecido");
+    console.log("Product ID:", productId);
     console.log("Body completo:", JSON.stringify(payload, null, 2));
 
     // Determine plan and validate token
