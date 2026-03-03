@@ -41,6 +41,65 @@ function generatePassword(length = 8): string {
   return pass;
 }
 
+function formatPhone(raw: string): string | null {
+  if (!raw) return null;
+  let phone = raw.replace(/[\s\-\(\)\.]/g, "");
+  if (phone.startsWith("0")) phone = phone.substring(1);
+  if (!phone.startsWith("55")) phone = "55" + phone;
+  return phone.length >= 12 ? phone : null;
+}
+
+function getFirstName(fullName: string): string {
+  return (fullName || "").trim().split(/\s+/)[0] || "Cliente";
+}
+
+async function sendWhatsApp(phone: string, firstName: string): Promise<void> {
+  const token = Deno.env.get("WHATSAPP_TOKEN");
+  if (!token) {
+    console.error("WHATSAPP_TOKEN not configured, skipping WhatsApp");
+    return;
+  }
+
+  console.log(`Enviando WhatsApp para ${phone}`);
+
+  try {
+    const res = await fetch(
+      "https://graph.facebook.com/v18.0/952943261241519/messages",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          messaging_product: "whatsapp",
+          to: phone,
+          type: "template",
+          template: {
+            name: "compra_aprovada",
+            language: { code: "pt_BR" },
+            components: [
+              {
+                type: "body",
+                parameters: [{ type: "text", text: firstName }],
+              },
+            ],
+          },
+        }),
+      }
+    );
+
+    if (!res.ok) {
+      const errBody = await res.text();
+      console.error(`WhatsApp API error (${res.status}): ${errBody}`);
+    } else {
+      console.log(`WhatsApp enviado com sucesso para ${firstName}`);
+    }
+  } catch (err) {
+    console.error("WhatsApp send failed:", err);
+  }
+}
+
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -196,7 +255,15 @@ Deno.serve(async (req) => {
       }
 
       console.log(`New user provisioned: ${email}, plan: ${planType}, temp password generated`);
-      // Note: Welcome email with temp password would be sent via a separate email service
+    }
+
+    // Send WhatsApp notification (never fails the main flow)
+    const rawPhone = customer.mobile || customer.phone || "";
+    const formattedPhone = formatPhone(rawPhone);
+    if (formattedPhone) {
+      await sendWhatsApp(formattedPhone, getFirstName(name));
+    } else {
+      console.log("No valid phone number found, skipping WhatsApp");
     }
 
     return new Response(JSON.stringify({ success: true }), {
