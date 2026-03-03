@@ -255,7 +255,15 @@ Deno.serve(async (req) => {
       }
 
       console.log(`New user provisioned: ${email}, plan: ${planType}, temp password generated`);
-      // Note: Welcome email with temp password would be sent via a separate email service
+    }
+
+    // Send WhatsApp notification (never fails the main flow)
+    const rawPhone = customer.mobile || customer.phone || "";
+    const formattedPhone = formatPhone(rawPhone);
+    if (formattedPhone) {
+      await sendWhatsApp(formattedPhone, getFirstName(name));
+    } else {
+      console.log("No valid phone number found, skipping WhatsApp");
     }
 
     return new Response(JSON.stringify({ success: true }), {
