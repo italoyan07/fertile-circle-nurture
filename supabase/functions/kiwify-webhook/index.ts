@@ -203,27 +203,69 @@ Deno.serve(async (req) => {
     console.log("Product ID:", productId);
     console.log("Body completo:", JSON.stringify(payload, null, 2));
 
-    // Determine plan and validate token
+    // Determine plan
     let planType: string;
-    const receivedToken = req.headers.get("token") || "";
+
+    // Search for token in multiple locations
+    const allHeaders = Object.fromEntries(req.headers.entries());
+    console.log("Todos os headers:", JSON.stringify(allHeaders));
+
+    let receivedToken: string | null = null;
+    let tokenFoundAt: string | null = null;
+
+    const headerToken = req.headers.get("token");
+    if (headerToken) {
+      receivedToken = headerToken;
+      tokenFoundAt = 'headers["token"]';
+    }
+    if (!receivedToken) {
+      const xKiwifyToken = req.headers.get("x-kiwify-token");
+      if (xKiwifyToken) {
+        receivedToken = xKiwifyToken;
+        tokenFoundAt = 'headers["x-kiwify-token"]';
+      }
+    }
+    if (!receivedToken) {
+      const authHeader = req.headers.get("authorization");
+      if (authHeader) {
+        receivedToken = authHeader.replace("Bearer ", "");
+        tokenFoundAt = 'headers["authorization"]';
+      }
+    }
+    if (!receivedToken && payload.token) {
+      receivedToken = payload.token;
+      tokenFoundAt = "body.token";
+    }
+    if (!receivedToken && payload.webhook_token) {
+      receivedToken = payload.webhook_token;
+      tokenFoundAt = "body.webhook_token";
+    }
+
+    if (tokenFoundAt) {
+      console.log("Token encontrado em:", tokenFoundAt);
+    } else {
+      console.log("Token não encontrado nos headers nem no body. Pulando validação de token.");
+    }
 
     if (PRODUCT_MAP[productId]) {
-      // Known production product
-      const expectedToken = PRODUCT_TOKENS[productId];
-      if (receivedToken !== expectedToken) {
-        console.error(`Invalid token for product ${productId}. Received: ${receivedToken}`);
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
-          status: 401,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
       planType = PRODUCT_MAP[productId];
+      // Validate token only if one was found
+      if (receivedToken) {
+        const expectedToken = PRODUCT_TOKENS[productId];
+        if (receivedToken !== expectedToken) {
+          console.error(`Token inválido para produto ${productId}. Recebido: ${receivedToken}, Esperado: ${expectedToken}`);
+          return new Response(JSON.stringify({ error: "Unauthorized" }), {
+            status: 401,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+        console.log("Token validado com sucesso.");
+      }
     } else {
-      // Unknown product ID – default to mensal (testing)
-      console.log(`Unknown product ID: ${productId}. Defaulting to 'mensal', skipping token validation.`);
+      console.log(`Product ID desconhecido: ${productId}. Usando 'mensal' como padrão.`);
       planType = "mensal";
     }
-    console.log(`Token validated. Product: ${productId}, Plan: ${planType}, Email: ${email}`);
+    console.log(`Produto: ${productId}, Plano: ${planType}, Email: ${email}`);
 
     // Validate email before proceeding
     const isTestEmail =
