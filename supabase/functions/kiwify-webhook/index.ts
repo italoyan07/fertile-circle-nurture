@@ -150,11 +150,50 @@ Deno.serve(async (req) => {
     }
 
     const data = payload.data || payload;
-    const customer = data.customer || {};
-    const product = data.product || {};
-    const email = (customer.email || "").toLowerCase().trim();
-    const name = customer.name || "";
-    const productId = product.id || "";
+
+    // Email — multiple paths
+    const email = (
+      payload.data?.customer?.email ||
+      payload.customer?.email ||
+      payload.data?.Customer?.email ||
+      payload.buyer?.email ||
+      payload.data?.buyer?.email ||
+      ""
+    ).toLowerCase().trim();
+
+    // Nome — multiple paths
+    const name =
+      payload.data?.customer?.name ||
+      payload.customer?.name ||
+      payload.data?.Customer?.name ||
+      payload.buyer?.name ||
+      payload.data?.buyer?.name ||
+      "";
+
+    // Telefone — multiple paths
+    const rawPhone =
+      payload.data?.customer?.mobile ||
+      payload.data?.customer?.phone ||
+      payload.customer?.mobile ||
+      payload.customer?.phone ||
+      payload.buyer?.phone ||
+      payload.data?.buyer?.phone ||
+      "";
+
+    // Product ID — multiple paths
+    const productId =
+      payload.data?.product?.id ||
+      payload.product?.id ||
+      payload.data?.Product?.id ||
+      payload.product_id ||
+      payload.data?.product_id ||
+      "";
+
+    console.log("Email encontrado:", email);
+    console.log("Nome encontrado:", name);
+    console.log("Telefone encontrado:", rawPhone);
+    console.log("Product ID encontrado:", productId);
+    console.log("Body completo:", JSON.stringify(payload, null, 2));
 
     // Determine plan and validate token
     let planType: string;
