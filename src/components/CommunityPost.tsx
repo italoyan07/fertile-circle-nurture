@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Heart, MessageCircle, MoreVertical, Send, Shield } from "lucide-react";
+import { Heart, MessageCircle, MoreVertical, Send, Shield, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
@@ -162,10 +162,12 @@ const CommunityPost = ({
             content_id: deleteTarget.id,
             reason: deleteTarget.reason,
           });
+          toast.success("Comentário removido pela moderação");
+        } else {
+          toast.success("Comentário excluído");
         }
         setLocalCommentCount((c) => Math.max(0, c - 1));
         setCommentsList((prev) => prev.filter((c) => c.id !== deleteTarget.id));
-        toast.success("Comentário excluído.");
       }
     }
     setDeleteTarget(null);
@@ -289,7 +291,6 @@ const CommunityPost = ({
               commentsList.map((c) => {
                 const isOwnComment = currentUserId === c.user_id;
                 const canModerateComment = viewerIsOwner && !isOwnComment;
-                const showCommentMenu = isOwnComment || canModerateComment;
 
                 return (
                   <div key={c.id} className="flex gap-2 group">
@@ -307,66 +308,65 @@ const CommunityPost = ({
                             month: "2-digit",
                           })}
                         </span>
-                        {showCommentMenu && (
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <button className="ml-auto rounded p-0.5 text-muted-foreground opacity-0 group-hover:opacity-100 hover:bg-muted transition-all">
-                                <MoreVertical className="h-3 w-3" />
-                              </button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="min-w-[180px]">
-                              {isOwnComment && (
+                        <div className="ml-auto flex items-center gap-1">
+                          {isOwnComment && (
+                            <button
+                              onClick={() => setDeleteTarget({ type: "comment", id: c.id })}
+                              className="rounded p-1 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+                              title="Excluir comentário"
+                            >
+                              <Trash2 className="h-3 w-3" />
+                            </button>
+                          )}
+                          {canModerateComment && (
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <button className="rounded p-0.5 text-muted-foreground hover:bg-muted transition-colors">
+                                  <MoreVertical className="h-3 w-3" />
+                                </button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end" className="min-w-[180px]">
                                 <DropdownMenuItem
                                   className="text-destructive focus:text-destructive"
-                                  onClick={() => setDeleteTarget({ type: "comment", id: c.id })}
+                                  onClick={() =>
+                                    setDeleteTarget({
+                                      type: "comment",
+                                      id: c.id,
+                                      reason: "Removido pelo moderador",
+                                    })
+                                  }
                                 >
+                                  <Shield className="mr-2 h-3.5 w-3.5" />
                                   Excluir comentário
                                 </DropdownMenuItem>
-                              )}
-                              {canModerateComment && (
-                                <>
-                                  <DropdownMenuItem
-                                    className="text-destructive focus:text-destructive"
-                                    onClick={() =>
-                                      setDeleteTarget({
-                                        type: "comment",
-                                        id: c.id,
-                                        reason: "Removido pelo moderador",
-                                      })
-                                    }
-                                  >
-                                    <Shield className="mr-2 h-3.5 w-3.5" />
-                                    Excluir comentário
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem
-                                    className="text-destructive focus:text-destructive"
-                                    onClick={() =>
-                                      setDeleteTarget({
-                                        type: "comment",
-                                        id: c.id,
-                                        reason: "Violação de privacidade",
-                                      })
-                                    }
-                                  >
-                                    Excluir — violação de privacidade
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem
-                                    className="text-destructive focus:text-destructive"
-                                    onClick={() =>
-                                      setDeleteTarget({
-                                        type: "comment",
-                                        id: c.id,
-                                        reason: "Conteúdo inadequado",
-                                      })
-                                    }
-                                  >
-                                    Excluir — conteúdo inadequado
-                                  </DropdownMenuItem>
-                                </>
-                              )}
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        )}
+                                <DropdownMenuItem
+                                  className="text-destructive focus:text-destructive"
+                                  onClick={() =>
+                                    setDeleteTarget({
+                                      type: "comment",
+                                      id: c.id,
+                                      reason: "Violação de privacidade",
+                                    })
+                                  }
+                                >
+                                  Excluir — violação de privacidade
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  className="text-destructive focus:text-destructive"
+                                  onClick={() =>
+                                    setDeleteTarget({
+                                      type: "comment",
+                                      id: c.id,
+                                      reason: "Conteúdo inadequado",
+                                    })
+                                  }
+                                >
+                                  Excluir — conteúdo inadequado
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          )}
+                        </div>
                       </div>
                       <p className="text-xs text-foreground/80 font-body">{c.content}</p>
                     </div>
