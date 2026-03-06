@@ -147,7 +147,7 @@ const CommunityPost = ({
             reason: deleteTarget.reason,
           });
         }
-        toast.success("Post excluído.");
+        toast.success("Post excluído com sucesso");
         onDelete?.();
       }
     } else {
