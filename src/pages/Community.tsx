@@ -185,7 +185,7 @@ const Community = () => {
           {...post}
           isOwner={profile?.is_owner || false}
           onLike={() => handleLike(post.id)}
-          onDelete={() => fetchPosts()} />
+          onDelete={() => handlePostDeleted(post.id)} />
 
         )
         }
