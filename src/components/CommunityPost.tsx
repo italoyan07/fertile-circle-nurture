@@ -162,10 +162,12 @@ const CommunityPost = ({
             content_id: deleteTarget.id,
             reason: deleteTarget.reason,
           });
+          toast.success("Comentário removido pela moderação");
+        } else {
+          toast.success("Comentário excluído");
         }
         setLocalCommentCount((c) => Math.max(0, c - 1));
         setCommentsList((prev) => prev.filter((c) => c.id !== deleteTarget.id));
-        toast.success("Comentário excluído.");
       }
     }
     setDeleteTarget(null);
