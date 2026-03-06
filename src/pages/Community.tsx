@@ -71,6 +71,35 @@ const Community = () => {
 
   useEffect(() => {fetchPosts();}, [user]);
 
+  // Realtime subscriptions for instant updates
+  useEffect(() => {
+    const postsChannel = supabase
+      .channel('community-posts-changes')
+      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'community_posts' }, (payload) => {
+        setPosts((prev) => prev.filter((p) => p.id !== payload.old.id));
+      })
+      .subscribe();
+
+    const commentsChannel = supabase
+      .channel('community-comments-changes')
+      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'comments' }, (payload) => {
+        // Update comment count for the affected post
+        if (payload.old.post_id) {
+          setPosts((prev) => prev.map((p) => p.id === payload.old.post_id ? { ...p, comments: Math.max(0, p.comments - 1) } : p));
+        }
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(postsChannel);
+      supabase.removeChannel(commentsChannel);
+    };
+  }, []);
+
+  const handlePostDeleted = (postId: string) => {
+    setPosts((prev) => prev.filter((p) => p.id !== postId));
+  };
+
   const filteredPosts = activeCategory === "Todas" ? posts : posts.filter((p) => p.category === activeCategory);
 
   const handleLike = async (id: string) => {
