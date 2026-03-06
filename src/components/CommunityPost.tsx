@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Heart, MessageCircle, MoreVertical, Send, Shield } from "lucide-react";
+import { Heart, MessageCircle, MoreVertical, Send, Shield, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
